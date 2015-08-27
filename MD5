@@ -1,0 +1,10 @@
+b986fb865fd06c2a012ac1cac6f4a097 *DESCRIPTION
+cbfd1d6782d3617c87cc408b37d9e0e8 *INDEX
+ab706d69859377fbf709813e890f699c *NAMESPACE
+301114d869e66789903a3c1ab0606b33 *R/nhanes.R
+18ce0f89d9b8b2a1137eba49ff85c21c *R/sysdata.rda
+3f2fe2de43d3f7f5e69f57b010ea7fb4 *man/nhanes.Rd
+2c4afcc53cdecbc6c55944887ab1cfb7 *man/nhanesAttr.Rd
+d92b94b895c4d3ca271ca9de16e20034 *man/nhanesTableVars.Rd
+30c1f3ef01b076f59fa150f4ebc9e0ad *man/nhanesTables.Rd
+9fd24491dbd24e6fa7ac7f250865c59e *man/nhanesTranslate.Rd
