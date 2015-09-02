@@ -2,27 +2,28 @@
 % Please edit documentation in R/nhanes.R
 \name{nhanesTables}
 \alias{nhanesTables}
-\title{Returns a list of table names for the specified survey group}
+\title{Returns a list of table names for the specified survey group.}
 \usage{
 nhanesTables(nh_surveygroup, year, details = FALSE)
 }
 \arguments{
-\item{nh_surveygroup}{The type of survey (DEMOGRAPHIC, DIETARY, EXAMINATION, LABORATORY, QUESTIONNAIRE)}
+\item{nh_surveygroup}{The type of survey (DEMOGRAPHIC, DIETARY, EXAMINATION, LABORATORY, QUESTIONNAIRE).
+Abbreviated terms may also be used: (DEMO, DIET, EXAM, LAB, Q).}
 
-\item{year}{The year in yyyy format where 1999 <= yyyy <= 2012}
+\item{year}{The year in yyyy format where 1999 <= yyyy <= 2012.}
 
-\item{details}{If true then a more detailed description of the tables is returned}
+\item{details}{If true then a more detailed description of the tables is returned.}
 }
 \value{
-The names of the tables in the specified survey group
+The names of the tables in the specified survey group.
 }
 \description{
-Returns a list of table names for the specified survey group
+Enables quick display of all available tables in the survey group.
 }
 \details{
-The first step in browsing NHANES data is to display the table names.
-The table names are stored internal to the nhanes package, i.e. the information is retrieved from
-internal tables such as vars_EXAMINATION_2005-2006.
+Data are retrieved via web scraping using html wrappers from package rvest.
+It is often useful to display the table names in an NHANES survey. In effect this
+is a convenient way to browse the available NHANES tables.
 }
 \examples{
 nhanesTables('EXAM', 2007)

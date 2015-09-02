@@ -4,17 +4,15 @@
 \alias{nhanesTableVars}
 \title{Displays a list of variables in the specified NHANES table.}
 \usage{
-nhanesTableVars(nh_surveygroup, year, nh_table, truncated = FALSE,
-  nchar = 100)
+nhanesTableVars(nh_surveygroup, nh_table, truncated = FALSE, nchar = 100)
 }
 \arguments{
-\item{nh_surveygroup}{The type of survey (DEMOGRAPHIC, DIETARY, EXAMINATION, LABORATORY, QUESTIONNAIRE)}
+\item{nh_surveygroup}{The type of survey (DEMOGRAPHIC, DIETARY, EXAMINATION, LABORATORY, QUESTIONNAIRE).
+Abbreviated terms may also be used: (DEMO, DIET, EXAM, LAB, Q).}
 
-\item{year}{The year in yyyy format where 1999 <= yyyy <= 2012}
+\item{nh_table}{The name of the specific table to retrieve.}
 
-\item{nh_table}{The name of the specific table to retrieve}
-
-\item{truncated}{If true then only the variable names and descriptions are returned, which is often sufficient}
+\item{truncated}{If true then only the variable names and descriptions are returned, which is often sufficient.}
 
 \item{nchar}{The number of characters in the Variable Description to print. Values are limited to 0<=nchar<=127.
 This is used to enhance readability, cause variable descriptions can be very long.}
@@ -23,14 +21,15 @@ This is used to enhance readability, cause variable descriptions can be very lon
 The names of the tables in the specified survey group
 }
 \description{
-If truncated = TRUE then only the field names and field descriptions are returned.
+Enables quick display of table variables and their definitions.
 }
 \details{
+Data are retrieved via web scraping using html wrappers from package rvest.
 Each data table contains multiple, sometimes more than 100, fields. It is helpful to list the field
 descriptions to ascertain quickly if a data table is of interest.
 }
 \examples{
-nhanesTableVars('EXAM', 2007, 'BPX_E')
-nhanesTableVars('EXAM', 2007, 'OHX_E', truncated=TRUE)
+nhanesTableVars('LAB', 'CBC_E')
+nhanesTableVars('EXAM', 'OHX_E', truncated=TRUE)
 }
 

@@ -1,16 +1,16 @@
 Package: nhanesA
-Version: 0.4
-Date: 2015-08-26
+Version: 0.5
+Date: 2015-08-29
 Title: NHANES Data Retrieval
 Author: Christopher Endres
 Maintainer: Christopher Endres <cjendres1@gmail.com>
 Depends: R (>= 3.0.0)
-Imports: stringr, Hmisc
+Imports: stringr, Hmisc, rvest, magrittr
 Description: Utility to retrieve data from the National Health and Nutrition Examination Survey (NHANES).
 License: GPL (>= 2)
 LazyData: TRUE
 URL: https://github.com/cjendres1/nhanes
-Packaged: 2015-08-26 22:59:01 UTC; Endres
+Packaged: 2015-09-01 22:48:05 UTC; Endres
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2015-08-27 08:31:57
+Date/Publication: 2015-09-02 01:42:48

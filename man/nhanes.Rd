@@ -2,27 +2,26 @@
 % Please edit documentation in R/nhanes.R
 \name{nhanes}
 \alias{nhanes}
-\title{Download an XPT table and return as a data frame}
+\title{Download an NHANES table and return as a data frame.}
 \usage{
-nhanes(year, nh_table)
+nhanes(nh_table)
 }
 \arguments{
-\item{year}{The year in yyyy format where 1999 <= yyyy <= 2012}
-
-\item{nh_table}{The name of the specific table to retrieve}
+\item{nh_table}{The name of the specific table to retrieve.}
 }
 \value{
-The table is returned as a data frame
+The table is returned as a data frame.
 }
 \description{
-Download an XPT table and return as a data frame
+Use to download NHANES data tables that are in SAS format.
 }
 \details{
-Currently, a table is downloaded in its entirety. Other than nhanesAttr, this is the
-only function that actually accesses data from the nhanes site directly.
+Downloads a table from the NHANES website in its entirety. NHANES tables
+are stored in SAS '.XPT' format. Function nhanes uses sasxport.get from package H
+misc to retrieve the data.
 }
 \examples{
-nhanes(2007, 'BPX_E')
-nhanes(2009, 'FOLATE_F')
+nhanes('BPX_E')
+nhanes('FOLATE_F')
 }
 

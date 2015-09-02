@@ -2,32 +2,31 @@
 % Please edit documentation in R/nhanes.R
 \name{nhanesTranslate}
 \alias{nhanesTranslate}
-\title{Translates code to it's text value}
+\title{Display code translation information for the specified table.}
 \usage{
-nhanesTranslate(nh_surveygroup, colname)
+nhanesTranslate(nh_table, colname, details = FALSE)
 }
 \arguments{
-\item{nh_surveygroup}{The survey group that contains the columns to be translated.}
+\item{nh_table}{The name of the specific table to retrieve.}
 
 \item{colname}{The name of the column to translate}
+
+\item{details}{If TRUE. then all available table translation information is displayed.}
 }
 \value{
 The code translation
 }
 \description{
-Many of the NHANES data tables have encoded values. E.g. 1 = 'Male', 2 = 'Female'
-We want to access the code as needed either by simply displaying the code translation,
-or applying the translation directly to the table. E.g, for gender we may want to
-translate the code (1,2) to the represented values (Male, Female).
+Returns code translations which is especially useful for categorical tables,
+which includes most NHANES tables.
 }
 \details{
-Any coded column will have a specific data code, and many columns may share the same code translation.
-
-Code translations are done internally in the nhanes package. Specifically, the translations
-are indicated in the nhanesCodeMapXXXXX lists.
+Code translation tables are retrieved via webscraping using rvest.
+Many of the NHANES data tables have encoded values. E.g. 1 = 'Male', 2 = 'Female'.
+By default, the codes and the translated values are returned in a data frame.
 }
 \examples{
-nhanesTranslate('DEMO', 'DMQADFC')
-nhanesTranslate('LAB', 'DCD030')
+nhanesTranslate('DEMO_B', 'DMDBORN')
+nhanesTranslate('BPX_F', 'BPACSZ', details=TRUE)
 }
 

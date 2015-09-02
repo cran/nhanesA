@@ -2,13 +2,11 @@
 % Please edit documentation in R/nhanes.R
 \name{nhanesAttr}
 \alias{nhanesAttr}
-\title{Returns the attributes of an NHANES data table}
+\title{Returns the attributes of an NHANES data table.}
 \usage{
-nhanesAttr(year, nh_table)
+nhanesAttr(nh_table)
 }
 \arguments{
-\item{year}{The year in yyyy format where 1999 <= yyyy <= 2012}
-
 \item{nh_table}{The name of the specific table to retrieve}
 }
 \value{
@@ -22,7 +20,8 @@ size = total size of table in bytes \cr
 types = data types of each column
 }
 \description{
-Returns the attributes of an NHANES data table
+Returns attributes such as number of rows, columns, and memory size,
+but does not reutrn the table itself.
 }
 \details{
 nhanesAttr allows one to check the size and other charactersistics of a data table
@@ -30,7 +29,7 @@ before importing into R. To retrieve these characteristics, the specified table 
 characteristics are determined, then the table is deleted.
 }
 \examples{
-nhanesAttr(2007, 'BPX_E')
-nhanesAttr(2009, 'FOLATE_F')
+nhanesAttr('BPX_E')
+nhanesAttr('FOLATE_F')
 }
 
