@@ -10,9 +10,9 @@
 
 <meta name="author" content="Christopher Endres" />
 
-<meta name="date" content="2015-09-23" />
+<meta name="date" content="2015-10-08" />
 
-<title>Introducing_nhanesA</title>
+<title>Introducing nhanesA</title>
 
 
 
@@ -52,15 +52,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 
 <div id="header">
-<h1 class="title">Introducing_nhanesA</h1>
+<h1 class="title">Introducing nhanesA</h1>
 <h4 class="author"><em>Christopher Endres</em></h4>
-<h4 class="date"><em>2015-09-23</em></h4>
+<h4 class="date"><em>2015-10-08</em></h4>
 </div>
 
 
 <div id="background" class="section level2">
 <h2>Background</h2>
-<p>nhanesA was developed to enable fully customizable retrieval of data from the National Health and Nutrition Examination Survey (NHANES). The survey is conducted by the National Center for Health Statistics (NCHS), and data are publicly available at: <a href="http://www.cdc.gov/nchs/nhanes.htm" class="uri">http://www.cdc.gov/nchs/nhanes.htm</a>. Approximately 5,000 people are surveyed annually, and the results are grouped in two-year intervals. NHANES data are reported in well over one thousand peer-reviewed journal publications every year.</p>
+<p>nhanesA was developed to enable fully customizable retrieval of data from the National Health and Nutrition Examination Survey (NHANES). The survey is conducted by the National Center for Health Statistics (NCHS), and data are publicly available at: <a href="http://www.cdc.gov/nchs/nhanes.htm" class="uri">http://www.cdc.gov/nchs/nhanes.htm</a>. NHANES data are reported in well over one thousand peer-reviewed journal publications every year.</p>
 </div>
 <div id="nhanes-data" class="section level2">
 <h2>NHANES Data</h2>
@@ -80,13 +80,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 ## 5     BMX_D                                     Body Measures
 ## 6   DXXAG_D Dual Energy X-ray Absorptiometry - Android/Gynoid
 ## 7  DXXFEM_D          Dual Energy X-ray Absorptiometry - Femur
-## 8  DXXSPN_D          Dual Energy X-ray Absorptiometry - Spine
-## 9  OPXFDT_D     Ophthalmology - Frequency Doubling Technology
-## 10 OPXRET_D                   Ophthalmology - Retinal Imaging
-## 11    OHX_D                                       Oral Health
-## 12 PAXRAW_D                         Physical Activity Monitor
-## 13    VIX_D                                            Vision</code></pre>
-<p>Note that the survey is grouped in two-year intervals beginning with the odd year. For convenience, only a single 4-digit year is entered such that <code>nhanesTables('EXAM', 2005)</code> and <code>nhanesTables('EXAM', 2006)</code> yield identical output. In the preceding example we see that the Examination data for the 2005-2006 survey consists of thirteen tables.</p>
+## 8  OPXFDT_D     Ophthalmology - Frequency Doubling Technology
+## 9     OHX_D                                       Oral Health
+## 10 PAXRAW_D                         Physical Activity Monitor
+## 11    VIX_D                                            Vision</code></pre>
+<p>Note that the two-year survey intervals begin with the odd year. For convenience, only a single 4-digit year is entered such that <code>nhanesTables('EXAM', 2005)</code> and <code>nhanesTables('EXAM', 2006)</code> yield identical output.</p>
 </div>
 <div id="list-variables-in-an-nhanes-table" class="section level3">
 <h3>List Variables in an NHANES Table</h3>
@@ -127,10 +125,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre><code>## Processing SAS dataset DEMO_D     ..</code></pre>
 <p>We then merge the tables and compute average values by gender for several variables:</p>
 <pre class="sourceCode r"><code class="sourceCode r">bmx_demo &lt;-<span class="st"> </span><span class="kw">merge</span>(demo_d, bmx_d)
-<span class="kw">aggregate</span>(<span class="kw">cbind</span>(bmxht,bmxwt, bmxleg, bmxcalf, bmxthicr)~riagendr, bmx_demo, mean)</code></pre>
-<pre><code>##   riagendr    bmxht    bmxwt   bmxleg  bmxcalf bmxthicr
-## 1        1 170.0105 76.90659 40.49696 37.47678 51.45514
-## 2        2 158.9209 68.17988 37.19337 36.88751 51.09288</code></pre>
+<span class="kw">options</span>(<span class="dt">digits=</span><span class="dv">4</span>)
+<span class="kw">aggregate</span>(<span class="kw">cbind</span>(BMXHT,BMXWT, BMXLEG, BMXCALF, BMXTHICR)~RIAGENDR, bmx_demo, mean)</code></pre>
+<pre><code>##   RIAGENDR BMXHT BMXWT BMXLEG BMXCALF BMXTHICR
+## 1        1 170.0 76.91  40.50   37.48    51.46
+## 2        2 158.9 68.18  37.19   36.89    51.09</code></pre>
 </div>
 <div id="translation-of-coded-values" class="section level3">
 <h3>Translation of Coded Values</h3>
@@ -142,17 +141,17 @@ code > span.er { color: #ff0000; font-weight: bold; }
 ## 2             2            Female
 ## 3             .           Missing</code></pre>
 <p>If desired, we can use nhanesTranslate to apply the code translation to demo_d directly by assigning data=demo_d.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(<span class="kw">as.factor</span>(demo_d$riagendr))</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(<span class="kw">as.factor</span>(demo_d$RIAGENDR))</code></pre>
 <pre><code>## [1] &quot;1&quot; &quot;2&quot;</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">demo_d &lt;-<span class="st"> </span><span class="kw">nhanesTranslate</span>(<span class="st">'DEMO_D'</span>, <span class="st">'RIAGENDR'</span>, <span class="dt">data=</span>demo_d)</code></pre>
 <pre><code>## Translated columns: RIAGENDR</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(demo_d$riagendr)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(demo_d$RIAGENDR)</code></pre>
 <pre><code>## [1] &quot;Male&quot;   &quot;Female&quot;</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">bmx_demo &lt;-<span class="st"> </span><span class="kw">merge</span>(demo_d, bmx_d)
-<span class="kw">aggregate</span>(<span class="kw">cbind</span>(bmxht,bmxwt, bmxleg, bmxcalf, bmxthicr)~riagendr, bmx_demo, mean)</code></pre>
-<pre><code>##   riagendr    bmxht    bmxwt   bmxleg  bmxcalf bmxthicr
-## 1     Male 170.0105 76.90659 40.49696 37.47678 51.45514
-## 2   Female 158.9209 68.17988 37.19337 36.88751 51.09288</code></pre>
+<span class="kw">aggregate</span>(<span class="kw">cbind</span>(BMXHT, BMXWT, BMXLEG, BMXCALF, BMXTHICR)~RIAGENDR, bmx_demo, mean)</code></pre>
+<pre><code>##   RIAGENDR BMXHT BMXWT BMXLEG BMXCALF BMXTHICR
+## 1     Male 170.0 76.91  40.50   37.48    51.46
+## 2   Female 158.9 68.18  37.19   36.89    51.09</code></pre>
 </div>
 <div id="downloading-a-complete-survey" class="section level3">
 <h3>Downloading a Complete Survey</h3>
@@ -167,7 +166,7 @@ q2007tables &lt;-<span class="st"> </span><span class="kw">lapply</span>(q2007na
 <pre class="sourceCode r"><code class="sourceCode r">bpx_d &lt;-<span class="st"> </span><span class="kw">nhanes</span>(<span class="st">'BPX_D'</span>)</code></pre>
 <pre><code>## Processing SAS dataset BPX_D      ..</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(bpx_d[,<span class="dv">6</span>:<span class="dv">11</span>])</code></pre>
-<pre><code>##   bpq150a bpq150b bpq150c bpq150d bpaarm bpacsz
+<pre><code>##   BPQ150A BPQ150B BPQ150C BPQ150D BPAARM BPACSZ
 ## 1      NA      NA      NA      NA     NA     NA
 ## 2       2       2       2       2      1      3
 ## 3       1       2       2       2      1      4
@@ -178,7 +177,7 @@ q2007tables &lt;-<span class="st"> </span><span class="kw">lapply</span>(q2007na
 bpx_d &lt;-<span class="st"> </span><span class="kw">suppressWarnings</span>(<span class="kw">nhanesTranslate</span>(<span class="st">'BPX_D'</span>, bpx_d_vars, <span class="dt">data=</span>bpx_d))</code></pre>
 <pre><code>## Translated columns: PEASCST1 PEASCCT1 BPQ150A BPQ150B BPQ150C BPQ150D BPAARM BPACSZ BPXPULS BPXPTY BPAEN2 BPAEN3 BPAEN4</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(bpx_d[,<span class="dv">6</span>:<span class="dv">11</span>])</code></pre>
-<pre><code>##   bpq150a bpq150b bpq150c bpq150d bpaarm        bpacsz
+<pre><code>##   BPQ150A BPQ150B BPQ150C BPQ150D BPAARM        BPACSZ
 ## 1    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   &lt;NA&gt;          &lt;NA&gt;
 ## 2      No      No      No      No  Right Adult (12X22)
 ## 3     Yes      No      No      No  Right Large (15X32)

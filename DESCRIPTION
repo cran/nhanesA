@@ -1,6 +1,6 @@
 Package: nhanesA
-Version: 0.6.0
-Date: 2015-09-19
+Version: 0.6.1
+Date: 2015-10-07
 Title: NHANES Data Retrieval
 Author: Christopher Endres
 Maintainer: Christopher Endres <cjendres1@gmail.com>
@@ -10,9 +10,9 @@ Description: Utility to retrieve data from the National Health and Nutrition Exa
 License: GPL (>= 2)
 LazyData: FALSE
 URL: https://github.com/cjendres1/nhanes
-Packaged: 2015-09-23 05:41:51 UTC; Endres
+Packaged: 2015-10-08 21:39:51 UTC; Endres
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2015-09-23 08:20:18
+Date/Publication: 2015-10-09 00:02:25
