@@ -1,4 +1,4 @@
-#nhaneS - retrieve data from the CDC NHANES repository
+#nhanesA - retrieve data from the CDC NHANES repository
 nhanesURL <- 'http://wwwn.cdc.gov/Nchs/Nhanes/'
 
 # Create a list of nhanes groups
@@ -77,6 +77,7 @@ if(nn!=0){ #Underscores were found
 } else #If there are no underscores then table must be from first survey
   nh_year <- "1999-2000"
 }
+
 #------------------------------------------------------------------------------
 # An internal function that converts a year into the nhanes interval.
 # E.g. 2003 is converted to '2003-2004'
@@ -96,7 +97,6 @@ get_nh_survey_years <- function(year) {
 xpath <- '//*[@id="ContentPlaceHolder1_GridView1"]'
 
 #------------------------------------------------------------------------------
-
 #' Returns a list of table names for the specified survey group.
 #' 
 #' Enables quick display of all available tables in the survey group.
@@ -167,7 +167,6 @@ nhanesTables <- function(nh_surveygroup, year, nchar=100, details = FALSE, names
 }
 
 #------------------------------------------------------------------------------
-
 #' Displays a list of variables in the specified NHANES table.
 #' 
 #' Enables quick display of table variables and their definitions.
@@ -228,13 +227,12 @@ nhanesTableVars <- function(nh_surveygroup, nh_table, details = FALSE, nchar=100
 }
 
 #------------------------------------------------------------------------------
-
 #' Download an NHANES table and return as a data frame.
 #' 
 #' Use to download NHANES data tables that are in SAS format.
 #' 
 #' @importFrom Hmisc sasxport.get
-#' @importFrom stringr str_c str_to_upper
+#' @importFrom stringr str_c
 #' @param nh_table The name of the specific table to retrieve.
 #' @return The table is returned as a data frame.
 #' @details Downloads a table from the NHANES website in its entirety. NHANES tables 
@@ -249,10 +247,7 @@ nhanes <- function(nh_table) {
   nht <- tryCatch({    
     nh_year <- get_year_from_nh_table(nh_table)
     url <- str_c(nhanesURL, nh_year, '/', nh_table, '.XPT', collapse='')
-    nhanes_table <- sasxport.get(url)
-    names(nhanes_table) <- str_to_upper(names(nhanes_table))
-    return(nhanes_table)
-#    return(sasxport.get(url))
+    return(sasxport.get(url, lowernames=FALSE))
   },
   error = function(cond) {
     message(paste("Data set ", nh_table,  " is not available"), collapse='')
@@ -267,13 +262,70 @@ nhanes <- function(nh_table) {
 }
 
 #------------------------------------------------------------------------------
+#' Import Dual Energy X-ray Absorptiometry (DXA) data.
+#' 
+#' DXA data were acquired from 1999-2006. 
+#' 
+#' @importFrom stringr str_c
+#' @importFrom Hmisc sasxport.get
+#' @importFrom utils download.file
+#' @param year The year of the data to import, where 1999<=year<=2006. 
+#' @param suppl If TRUE then retrieve the supplemental data.
+#' @param destfile The name of a destination file. If NULL then the data are imported 
+#' into the R environment but no file is created.
+#' @return By default the table is returned as a data frame. When downloading to file, the return argument
+#' is the integer code from download.file where 0 means success and non-zero indicates failure to download.
+#' @details  Provide destfile in order to write the data to file. If destfile is not provided then
+#' the data will be imported into the R environment.
+#' @examples
+#' \donttest{dxa_b <- nhanesDXA(2001)}
+#' \donttest{dxa_c_s <- nhanesDXA(2003, suppl=TRUE)}
+#' \donttest{nhanesDXA(1999, destfile="dxx.xpt")}
+#' @export
+nhanesDXA <- function(year, suppl=FALSE, destfile=NULL) {
+  dxaURL <- "ftp://ftp.cdc.gov/pub/health_Statistics/nchs/nhanes/dxx/"
+  
+  dxa_fname <- function(year, suppl) {
+    if(year == 1999 | year == 2000) {fname = 'dxx'}
+    else if(year == 2001 | year == 2002) {fname = 'dxx_b'}
+    else if(year == 2003 | year == 2004) {fname = 'dxx_c'}
+    else if(year == 2005 | year == 2006) {fname = 'DXX_D'}
+    if(suppl == TRUE) {
+      if(year == 2005 | year == 2006) {
+        fname <- str_c(fname, '_S', collapse='')
+      } else {fname <- str_c(fname, '_s', collapse='')}
+    }
+    return(fname)
+  }
+  
+  if(year) {
+    if(!(as.character(year) %in% c('1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006'))) {
+      stop("Invalid survey year for DXA data")
+    } else {
+      fname <- dxa_fname(year, suppl)
+      url <- str_c(dxaURL, fname, '.xpt', collapse='')
+      if(!is.null(destfile)) {
+        ok <- download.file(url, destfile, mode="wb", quiet=TRUE)
+        return(ok)
+      } else {
+        tf <- tempfile()
+        download.file(url, tf, mode="wb", quiet=TRUE)
+        return(sasxport.get(tf,lowernames=FALSE))
+      }
+    }
+  } else { # Year not provided - no data will be returned
+    stop("Year is required")
+  }
+}
+
+#------------------------------------------------------------------------------
 #' Returns the attributes of an NHANES data table.
 #' 
 #' Returns attributes such as number of rows, columns, and memory size,
 #' but does not return the table itself.
 #' 
 #' @importFrom Hmisc sasxport.get
-#' @importFrom stringr str_c str_to_upper
+#' @importFrom stringr str_c
 #' @importFrom utils object.size
 #' @param nh_table The name of the specific table to retrieve
 #' @return The following attributes are returned as a list \cr
@@ -296,8 +348,7 @@ nhanesAttr <- function(nh_table) {
   nht <- tryCatch({    
     nh_year <- get_year_from_nh_table(nh_table)
     url <- str_c(nhanesURL, nh_year, '/', nh_table, '.XPT', collapse='')
-    tmp <- sasxport.get(url)
-    names(tmp) <- str_to_upper(names(tmp))
+    tmp <- sasxport.get(url,lowernames=FALSE)
     nhtatt <- attributes(tmp)
     nhtatt$row.names <- NULL
     nhtatt$nrow <- nrow(tmp)
@@ -321,7 +372,6 @@ nhanesAttr <- function(nh_table) {
 }
 
 #------------------------------------------------------------------------------
-
 #' Display code translation information for the specified table.
 #' 
 #' Returns code translations which is especially useful for categorical tables, 
@@ -337,7 +387,8 @@ nhanesAttr <- function(nh_table) {
 #' In that case the return argument is the code-translated data frame.
 #' @param nchar Applies only when data is defined. Code translations can be very long. \cr
 #' Truncate the length by setting nchar. Default is nchar = 32.
-#' @param details If TRUE. then all available table translation information is displayed.
+#' @param details If TRUE then all available table translation information is displayed.
+#' @param dxa If TRUE then the 2005-2006 DXA translation table will be used.
 #' @return The code translation table (or translated data frame when data is defined).
 #' @details Code translation tables are retrieved via webscraping using rvest. 
 #' Many of the NHANES data tables have encoded values. E.g. 1 = 'Male', 2 = 'Female'.
@@ -351,7 +402,7 @@ nhanesAttr <- function(nh_table) {
 #' \donttest{nhanesTranslate('BPX_F', 'BPACSZ', data=nhanes('BPX_F'))}
 #' @export
 #' 
-nhanesTranslate <- function(nh_table, colnames, data = NULL, nchar = 32, details=FALSE) {
+nhanesTranslate <- function(nh_table, colnames=NULL, data = NULL, nchar = 32, details=FALSE, dxa=FALSE) {
   if(is.null(colnames)) {
     message('Column name is required')
     return(0)
@@ -359,13 +410,8 @@ nhanesTranslate <- function(nh_table, colnames, data = NULL, nchar = 32, details
   
   # Parse nh_table to find the suffix, e.g. for table 'BPX_E', the suffix is '_E'
   # If there is no suffix, then we are likely dealing with data from 1999-2000
-
-  nh_year <- get_year_from_nh_table(nh_table)
-  if(is.null(nh_year)) {
-    return(NULL)
-  }  
   
-  get_translation_table <- function(colname) {
+  get_translation_table <- function(colname, url) {
     xpt <- str_c('//*[h3[a[@name="', colname, '"]]]', sep='')
     tabletree <- url %>% read_html() %>% xml_nodes(xpath=xpt)
     if(length(tabletree)>0) {
@@ -386,8 +432,16 @@ nhanesTranslate <- function(nh_table, colnames, data = NULL, nchar = 32, details
     }
   }
   
-  url <- str_c(nhanesURL, nh_year, '/', nh_table, '.htm', sep='')
-  translations <- lapply(colnames, get_translation_table)
+  if(dxa) {
+    code_translation_url <- "http://www.cdc.gov/nchs/nhanes/nhanes2005-2006/DXX_D.htm"
+  } else {
+    nh_year <- get_year_from_nh_table(nh_table)
+    if(is.null(nh_year)) {
+      return(NULL)
+    }  
+    code_translation_url <- str_c(nhanesURL, nh_year, '/', nh_table, '.htm', sep='')
+  }
+  translations <- lapply(colnames, get_translation_table, code_translation_url)
   names(translations) <- colnames
   
   nchar_max <- 128
@@ -413,8 +467,8 @@ nhanesTranslate <- function(nh_table, colnames, data = NULL, nchar = 32, details
         if(idx>0) { ## The column is present. Next we need to decide if it should be translated.
           if(length(levels(as.factor(data[[idx]]))) > 1) {
             data[[idx]] <- as.factor(data[[idx]])
-            data[[idx]] <- suppressMessages(mapvalues(data[[idx]], from = translations[[cname]][['Code.or.Value']], 
-                                            to = str_sub(translations[[cname]][['Value.Description']], 1, nchar)))
+            data[[idx]] <- suppressMessages(plyr::mapvalues(data[[idx]], from = translations[[cname]][['Code.or.Value']], 
+                                                      to = str_sub(translations[[cname]][['Value.Description']], 1, nchar)))
             translated <- c(translated, cname) }
         } else {
           notfound <- c(notfound, cname)
@@ -432,8 +486,8 @@ nhanesTranslate <- function(nh_table, colnames, data = NULL, nchar = 32, details
     return(data)
   }
 }
-#------------------------------------------------------------------------------
 
+#------------------------------------------------------------------------------
 #' Open a browser to NHANES.
 #' 
 #' The browser may be directed to a specific year, survey, or table.
@@ -444,35 +498,41 @@ nhanesTranslate <- function(nh_table, colnames, data = NULL, nchar = 32, details
 #' @param nh_surveygroup The type of survey (DEMOGRAPHICS, DIETARY, EXAMINATION, LABORATORY, QUESTIONNAIRE).
 #' Abbreviated terms may also be used: (DEMO, DIET, EXAM, LAB, Q).
 #' @param nh_table The name of an NHANES table.
+#' @param dxa If TRUE then browse to the DXA page.
 #' @details browseNHANES will open a web browser to the specified NHANES site.
 #' @examples
 #' \donttest{browseNHANES()}                     Defaults to the main data sets page
 #' \donttest{browseNHANES(2005)}                 The main page for the specified survey year
 #' \donttest{browseNHANES(2009, 'EXAM')}         Page for the specified year and survey group
 #' \donttest{browseNHANES(nh_table = 'VIX_D')}   Page for a specific table
+#' \donttest{browseNHANES(dxa=T)}                DXA main page
 #' @export
 #' 
 
-browseNHANES <- function(year=NULL, nh_surveygroup=NULL, nh_table=NULL) {
-  if(!is.null(nh_table)){
-    nh_year <- get_year_from_nh_table(nh_table)
-    url <- str_c(nhanesURL, nh_year, '/', nh_table, '.htm', sep='')
-    browseURL(url)
-  } else if(!is.null(year)) {
-    if(!is.null(nh_surveygroup)) {
-      nh_year <- get_nh_survey_years(year)
-      url <- str_c(nhanesURL, 'Search/DataPage.aspx?Component=', 
-                   str_to_title(as.character(nhanes_group[nh_surveygroup])), 
-                   '&CycleBeginYear=', unlist(str_split(as.character(nh_year), '-'))[[1]] , sep='')
-      browseURL(url)
-    } else {
-      nh_year <- get_nh_survey_years(year)
-      nh_year <- str_c(str_sub(unlist(str_extract_all(nh_year,"[[:digit:]]{4}")),3,4),collapse='_')
-      url <- str_c(nhanesURL, 'search/nhanes', nh_year, '.aspx', sep='')
-      browseURL(url)
-    }
+browseNHANES <- function(year=NULL, nh_surveygroup=NULL, nh_table=NULL, dxa=FALSE) {
+  if(dxa) {
+    browseURL("http://www.cdc.gov/nchs/nhanes/dxx/dxa.htm")
   } else {
-    browseURL("http://www.cdc.gov/nchs/nhanes/nhanes_questionnaires.htm")
+    if(!is.null(nh_table)){
+      nh_year <- get_year_from_nh_table(nh_table)
+      url <- str_c(nhanesURL, nh_year, '/', nh_table, '.htm', sep='')
+      browseURL(url)
+    } else if(!is.null(year)) {
+      if(!is.null(nh_surveygroup)) {
+        nh_year <- get_nh_survey_years(year)
+        url <- str_c(nhanesURL, 'Search/DataPage.aspx?Component=', 
+                     str_to_title(as.character(nhanes_group[nh_surveygroup])), 
+                     '&CycleBeginYear=', unlist(str_split(as.character(nh_year), '-'))[[1]] , sep='')
+        browseURL(url)
+      } else {
+        nh_year <- get_nh_survey_years(year)
+        nh_year <- str_c(str_sub(unlist(str_extract_all(nh_year,"[[:digit:]]{4}")),3,4),collapse='_')
+        url <- str_c(nhanesURL, 'search/nhanes', nh_year, '.aspx', sep='')
+        browseURL(url)
+      }
+    } else {
+      browseURL("http://www.cdc.gov/nchs/nhanes/nhanes_questionnaires.htm")
+    }
   }
 }
 #------------------------------------------------------------------------------
