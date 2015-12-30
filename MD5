@@ -1,12 +1,12 @@
-a71f73f060c12e116b1d2dd1aa9bba2f *DESCRIPTION
+ab76b9394f7afd957ce5e2554fe951fb *DESCRIPTION
 ea17d9c0cec23f0f7e1f917b3b310b93 *NAMESPACE
-ef7514a4599a23f8eeae5b0873ce3a13 *R/nhanes.R
+5dab94e27c858412c9425c80638b8006 *R/nhanes.R
 1e3f01bb9c11dce2aea4f7b2859c1609 *README.md
 466ae3e2930880655155f935e9455ffc *build/vignette.rds
 032afd0f5f5b2a32252ca75027db064f *inst/doc/Introducing_nhanesA.R
 0dcee0a04e27bbbe80a9b7c26c3865b2 *inst/doc/Introducing_nhanesA.Rmd
-63f3850af8802162c34cdf8933bdbc70 *inst/doc/Introducing_nhanesA.html
-3956f75fc0338145ff190cb93b2ce364 *man/browseNHANES.Rd
+b56c151988d980c6276f232bb9d69a0a *inst/doc/Introducing_nhanesA.html
+7963999d52aa8ab2aaf6c1165e941e9b *man/browseNHANES.Rd
 60919957c4b68ff5ab897bdaf9f6c119 *man/nhanes.Rd
 c2c2a0c3ba97bc03cd5251913aba4e68 *man/nhanesAttr.Rd
 985fbb24c4c04a0450e6366857aba271 *man/nhanesDXA.Rd
