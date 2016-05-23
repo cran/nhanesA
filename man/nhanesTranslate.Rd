@@ -5,7 +5,7 @@
 \title{Display code translation information for the specified table.}
 \usage{
 nhanesTranslate(nh_table, colnames = NULL, data = NULL, nchar = 32,
-  details = FALSE, dxa = FALSE)
+  mincategories = 2, details = FALSE, dxa = FALSE)
 }
 \arguments{
 \item{nh_table}{The name of the NHANES table to retrieve.}
@@ -16,11 +16,13 @@ nhanesTranslate(nh_table, colnames = NULL, data = NULL, nchar = 32,
 In that case the return argument is the code-translated data frame.}
 
 \item{nchar}{Applies only when data is defined. Code translations can be very long. \cr
-Truncate the length by setting nchar. Default is nchar = 32.}
+Truncate the length by setting nchar (default = 32).}
 
-\item{details}{If TRUE then all available table translation information is displayed.}
+\item{mincategories}{The minimum number of categories needed for code translations to be applied to the data (default=2).}
 
-\item{dxa}{If TRUE then the 2005-2006 DXA translation table will be used.}
+\item{details}{If TRUE then all available table translation information is displayed (default=FALSE).}
+
+\item{dxa}{If TRUE then the 2005-2006 DXA translation table will be used (default=FALSE).}
 }
 \value{
 The code translation table (or translated data frame when data is defined).

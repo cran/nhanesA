@@ -13,12 +13,12 @@ Abbreviated terms may also be used: (DEMO, DIET, EXAM, LAB, Q).}
 
 \item{nh_table}{The name of the specific table to retrieve.}
 
-\item{details}{If TRUE then only the variable names and descriptions are returned, which is often sufficient.}
+\item{details}{If TRUE then all columns in the variable description are returned (default=FALSE).}
 
 \item{nchar}{The number of characters in the Variable Description to print. Values are limited to 0<=nchar<=128.
 This is used to enhance readability, cause variable descriptions can be very long.}
 
-\item{namesonly}{If TRUE then only the variable names are returned.}
+\item{namesonly}{If TRUE then only the variable names are returned (default=FALSE).}
 }
 \value{
 The names of the tables in the specified survey group
@@ -34,6 +34,6 @@ descriptions to ascertain quickly if a data table is of interest.
 \examples{
 nhanesTableVars('LAB', 'CBC_E')
 nhanesTableVars('EXAM', 'OHX_E', details=TRUE, nchar=50)
-nhanesTableVars('DEMO', 'DEMO_F', namesonly = TRUE)
+\donttest{nhanesTableVars('DEMO', 'DEMO_F', namesonly = TRUE)}
 }
 
