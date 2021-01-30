@@ -1,11 +1,11 @@
-7904c1053186dd543c7aedb1e9853094 *DESCRIPTION
+1f1b77dd4183788e4514ac4bfb9f0e89 *DESCRIPTION
 f842a15f4a61422dd37127d8b1e9d417 *NAMESPACE
-34858757f5cfad0936457619d5f429d7 *R/nhanes.R
+24e7893238d681b521e7737cc0ffc099 *R/nhanes.R
 fd54545ddd9d2b7fb470e2b10cfa73b5 *README.md
 654bfe1dde6bc4707525085ec8477c18 *build/vignette.rds
-a86eefabf0a65f90f7ffd0ae1ec1194d *inst/doc/Introducing_nhanesA.R
-83ac1ba9cdbcb628cbe38260fd421e1c *inst/doc/Introducing_nhanesA.Rmd
-1edbf2ae4a74fd3bffd44d3bbe30660a *inst/doc/Introducing_nhanesA.html
+7359500e405a12eab9891898f2632763 *inst/doc/Introducing_nhanesA.R
+16a8a0be7fa1502ac72fd15a187cbc26 *inst/doc/Introducing_nhanesA.Rmd
+c8690d6622482b1cd096b231563c6b2c *inst/doc/Introducing_nhanesA.html
 0e0147c79ded54db7e994e4463b525e1 *man/browseNHANES.Rd
 2fd794f300d9c5534271235778dfa247 *man/nhanes.Rd
 b6e7e3058f219b71f94197a7bc7131ba *man/nhanesAttr.Rd
@@ -16,4 +16,4 @@ c5ce9170539eab2d17ea7a70bcb2c699 *man/nhanesSearchTableNames.Rd
 7086a99531ee40408c3eaa64c99998c5 *man/nhanesTableVars.Rd
 caac2f85c810f0608e8c4b2702d15611 *man/nhanesTables.Rd
 75b4923f6c8e1237d89f370b3f0a6be5 *man/nhanesTranslate.Rd
-83ac1ba9cdbcb628cbe38260fd421e1c *vignettes/Introducing_nhanesA.Rmd
+16a8a0be7fa1502ac72fd15a187cbc26 *vignettes/Introducing_nhanesA.Rmd

@@ -1,6 +1,6 @@
 Package: nhanesA
-Version: 0.6.5.2
-Date: 2021-01-24
+Version: 0.6.5.3
+Date: 2021-01-30
 Title: NHANES Data Retrieval
 Author: Christopher J. Endres
 Maintainer: Christopher J. Endres <cjendres1@gmail.com>
@@ -12,10 +12,10 @@ Description: Utility to retrieve data from the National Health and Nutrition
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://cran.r-project.org/package=nhanesA
-Packaged: 2021-01-24 16:44:11 UTC; Endres
+Packaged: 2021-01-30 21:33:58 UTC; Endres
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2021-01-24 17:50:02 UTC
+Date/Publication: 2021-01-31 00:20:07 UTC

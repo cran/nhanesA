@@ -12,17 +12,18 @@ demo_d <- nhanes('DEMO_D')
 ## ----bmx1---------------------------------------------------------------------
 bmx_demo <- merge(demo_d, bmx_d)
 options(digits=4)
-aggregate(cbind(BMXHT, BMXWT, BMXLEG, BMXCALF, BMXTHICR) ~ RIAGENDR, bmx_demo,mean)
+select_cols <- c('RIAGENDR', 'BMXHT', 'BMXWT', 'BMXLEG', 'BMXCALF', 'BMXTHICR')
+print(bmx_demo[5:8,select_cols], row.names=FALSE)
 
 ## ----nhanestranslate----------------------------------------------------------
 nhanesTranslate('DEMO_D', 'RIAGENDR')
 
 ## ----bmx2---------------------------------------------------------------------
-levels(as.factor(demo_d$RIAGENDR))
 demo_d <- nhanesTranslate('DEMO_D', 'RIAGENDR', data=demo_d)
-levels(demo_d$RIAGENDR)
 bmx_demo <- merge(demo_d, bmx_d)
-aggregate(cbind(BMXHT, BMXWT, BMXLEG, BMXCALF, BMXTHICR)~RIAGENDR, bmx_demo, mean)
+
+## ----bmx_final_result---------------------------------------------------------
+print(bmx_demo[5:8,select_cols], row.names=FALSE)
 
 ## ----nhanestranslate2---------------------------------------------------------
 bpx_d <- nhanes('BPX_D')
