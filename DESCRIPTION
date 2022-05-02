@@ -1,21 +1,21 @@
 Package: nhanesA
-Version: 0.6.5.3
-Date: 2021-01-30
+Version: 0.6.7
+Date: 2022-05-02
 Title: NHANES Data Retrieval
 Author: Christopher J. Endres
 Maintainer: Christopher J. Endres <cjendres1@gmail.com>
 BugReports: https://github.com/cjendres1/nhanes/issues
 Depends: R (>= 3.0.0)
-Imports: stringr, Hmisc (>= 3.17-1), rvest, magrittr, xml2, plyr
+Imports: stringr, foreign, rvest, magrittr, xml2, plyr
 Description: Utility to retrieve data from the National Health and Nutrition 
 	Examination Survey (NHANES) website <https://www.cdc.gov/nchs/nhanes/index.htm>.
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://cran.r-project.org/package=nhanesA
-Packaged: 2021-01-30 21:33:58 UTC; Endres
+Packaged: 2022-05-02 04:04:46 UTC; BadgerDancer
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2021-01-31 00:20:07 UTC
+Date/Publication: 2022-05-02 08:50:02 UTC
