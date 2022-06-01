@@ -12,7 +12,7 @@
 
 <meta name="author" content="Christopher J. Endres" />
 
-<meta name="date" content="2022-05-02" />
+<meta name="date" content="2022-05-31" />
 
 <title>Introducing nhanesA</title>
 
@@ -334,7 +334,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Introducing nhanesA</h1>
 <h4 class="author">Christopher J. Endres</h4>
-<h4 class="date">2022-05-02</h4>
+<h4 class="date">2022-05-31</h4>
 
 
 
@@ -568,7 +568,7 @@ format.</p>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Import supplemental data</span></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>dxx_c_s <span class="ot">&lt;-</span> <span class="fu">nhanesDXA</span>(<span class="dv">2003</span>, <span class="at">suppl=</span><span class="cn">TRUE</span>)</span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Apply code translations</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>dxalist <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;DXAEXSTS&#39;</span>, <span class="st">&#39;DXITOT&#39;</span>, <span class="st">&#39;DXIHE&#39;</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>dxalist <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;DXAEXSTS&#39;</span>, <span class="st">&#39;DXIHE&#39;</span>)</span>
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>dxx_b <span class="ot">&lt;-</span> <span class="fu">nhanesTranslate</span>(<span class="at">colnames=</span>dxalist, <span class="at">data=</span>dxx_b, <span class="at">dxa=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="nhanes-national-youth-fitness-survey-nnyfs" class="section level3">
@@ -638,8 +638,7 @@ Consequently, a call to nhanesSearchVarName executes much faster than
 nhanesSearch; typically under 30s. nhanesSearchVarName is useful for
 finding all data tables that contain a given variable.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#nhanesSearchVarName use examples</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesSearchVarName</span>(<span class="st">&#39;BPXPULS&#39;</span>)</span></code></pre></div>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesSearchVarName</span>(<span class="st">&#39;BPXPULS&#39;</span>)</span></code></pre></div>
 <pre><code>##  [1] &quot;BPX_D&quot; &quot;BPX_E&quot; &quot;BPX&quot;   &quot;BPX_C&quot; &quot;BPX_B&quot; &quot;BPX_F&quot; &quot;BPX_G&quot; &quot;BPX_H&quot; &quot;BPX_I&quot;
 ## [10] &quot;BPX_J&quot;</code></pre>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesSearchVarName</span>(<span class="st">&#39;CSQ260i&#39;</span>, <span class="at">includerdc=</span><span class="cn">TRUE</span>, <span class="at">nchar=</span><span class="dv">38</span>, <span class="at">namesonly=</span><span class="cn">FALSE</span>)</span></code></pre></div>
@@ -684,25 +683,25 @@ nhanesSearchTableNames takes only a few seconds.</p>
 ## 16 2015-2016 Human Papillomavirus (HPV) DNA - Vaginal S HPVSWR_I Doc
 ## 17 2015-2016 Human Papillomavirus (HPV) DNA - Vaginal S HPVS_I_R Doc
 ## 18 2017-2018 Human Papillomavirus (HPV) DNA - Vaginal S HPVS_J_R Doc
-##                         Data.File        Date.Published
-## 1  HPVSER_F Data [XPT - 171.6 KB]         November 2013
-## 2                        RDC Only             July 2013
-## 3  HPVSER_E Data [XPT - 155.7 KB]         November 2013
-## 4  HPVSER_D Data [XPT - 151.6 KB]             July 2013
-## 5  HPVSRM_D Data [XPT - 302.6 KB]          January 2015
-## 6  HPVSWR_D Data [XPT - 694.4 KB]         November 2010
-## 7  HPVSWR_E Data [XPT - 677.9 KB]           August 2012
-## 8  HPVSWR_F Data [XPT - 725.2 KB]           August 2012
-## 9  HPVSWR_G Data [XPT - 661.1 KB]            March 2015
-## 10 HPVSWR_D Data [XPT - 694.4 KB] Updated November 2018
-## 11                       RDC Only           August 2012
-## 12                       RDC Only            March 2015
-## 13 HPVSWR_H Data [XPT - 716.6 KB]         December 2016
-## 14                       RDC Only         December 2016
-## 15  HPVSWC_I Data [XPT - 33.3 KB]         November 2018
-## 16 HPVSWR_I Data [XPT - 667.5 KB]         November 2018
-## 17                       RDC Only         November 2018
-## 18                       RDC Only         December 2020</code></pre>
+##                                               Data.File Date.Published
+## 1                        HPVSER_F Data [XPT - 171.6 KB]  November 2013
+## 2                                              RDC Only      July 2013
+## 3  HPVSER_E Data [XPT - 155.7 KB]         November 2013      2007-2008
+## 4  HPVSER_D Data [XPT - 151.6 KB]             July 2013      2005-2006
+## 5  HPVSRM_D Data [XPT - 302.6 KB]          January 2015      2005-2006
+## 6  HPVSWR_D Data [XPT - 694.4 KB]         November 2010      2005-2006
+## 7  HPVSWR_E Data [XPT - 677.9 KB]           August 2012      2007-2008
+## 8  HPVSWR_F Data [XPT - 725.2 KB]           August 2012      2009-2010
+## 9  HPVSWR_G Data [XPT - 661.1 KB]            March 2015      2011-2012
+## 10 HPVSWR_D Data [XPT - 694.4 KB] Updated November 2018      2005-2006
+## 11                                             RDC Only    August 2012
+## 12                                             RDC Only     March 2015
+## 13 HPVSWR_H Data [XPT - 716.6 KB]         December 2016      2013-2014
+## 14                                             RDC Only  December 2016
+## 15  HPVSWC_I Data [XPT - 33.3 KB]         November 2018      2015-2016
+## 16 HPVSWR_I Data [XPT - 667.5 KB]         November 2018      2015-2016
+## 17                                             RDC Only  November 2018
+## 18                                             RDC Only  December 2020</code></pre>
 <div id="please-send-any-feedback-or-requests-to-cjendres1gmail.com.-hope-you-enjoy-your-experience-with-nhanesa" class="section level4">
 <h4>Please send any feedback or requests to <a href="mailto:cjendres1@gmail.com" class="email">cjendres1@gmail.com</a>.
 Hope you enjoy your experience with nhanesA!</h4>
