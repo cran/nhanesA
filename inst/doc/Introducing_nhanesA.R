@@ -1,22 +1,93 @@
-## ----nhanestables-------------------------------------------------------------
-library(nhanesA)
-nhanesTables('EXAM', 2005)
+## ----nhanestables, eval=FALSE-------------------------------------------------
+#  library(nhanesA)
+#  nhanesTables('EXAM', 2005)
 
-## ----nhanestablevars----------------------------------------------------------
-nhanesTableVars('EXAM', 'BMX_D')
+## ----nhanestables1, echo=FALSE------------------------------------------------
+df <- data.frame(matrix(1,nrow=13,ncol=2))
+names(df) <- c('Data.File.Name', 'Data.File.Description')
+df[1,] <- list('BPX_D',                                    'Blood Pressure')
+df[2,] <- list('BMX_D',                                     'Body Measures')
+df[3,] <- list('AUX_D',                                        'Audiometry')
+df[4,] <- list('AUXTYM_D',                         'Audiometry - Tympanometry')
+df[5,] <- list('DXXFEM_D',         'Dual Energy X-ray Absorptiometry - Femur')
+df[6,] <- list('OPXFDT_D',     'Ophthalmology - Frequency Doubling Technology')
+df[7,] <- list('OHX_D',                                       'Oral Health')
+df[8,] <- list('PAXRAW_D',                         'Physical Activity Monitor')
+df[9,] <- list('VIX_D',                                            'Vision')
+df[10,] <- list('DXXAG_D', 'Dual Energy X-ray Absorptiometry - Android/Gynoid')
+df[11,] <- list( 'AUXAR_D',                      'Audiometry - Acoustic Reflex')
+df[12,] <- list('OPXRET_D',                   'Ophthalmology - Retinal Imaging')
+df[13,] <- list('DXXSPN_D',          'Dual Energy X-ray Absorptiometry - Spine')
+df
 
-## ----nhanes-------------------------------------------------------------------
-bmx_d  <- nhanes('BMX_D')
-demo_d <- nhanes('DEMO_D')
+## ----nhanestablevars, eval=FALSE----------------------------------------------
+#  nhanesTableVars('EXAM', 'BMX_D')
 
-## ----bmd1---------------------------------------------------------------------
-bmx_demo <- merge(demo_d, bmx_d)
-options(digits=4)
-select_cols <- c('RIAGENDR', 'BMXHT', 'BMXWT', 'BMXLEG', 'BMXCALF', 'BMXTHICR')
-print(bmx_demo[5:8,select_cols], row.names=FALSE)
+## ----nhanestablevars1, echo=FALSE---------------------------------------------
+df <- data.frame(matrix(1,nrow=27,ncol=2))
+names(df) <- c('Variable.Name', 'Variable.Description')
+df[1,] <- list('BMDSTATS', 'Body Measures Component status Code')
+df[2,] <- list('BMIARMC',           'Arm Circumference Comment')
+df[3,] <- list('BMIARML',            'Upper Arm Length Comment')
+df[4,] <- list('BMICALF',               ' Maximal Calf Comment')
+df[5,] <- list('BMIHEAD',          'Head Circumference Comment')
+df[6,] <- list('BMIHT',             'Standing Height Comment')
+df[7,] <- list('BMILEG',            'Upper Leg Length Comment')
+df[8,] <- list('BMIRECUM',            'Recumbent Length Comment')
+df[9,] <- list('BMISUB',        'Subscapular Skinfold Comment')
+df[10,] <- list('BMITHICR',         'Thigh Circumference Comment')
+df[11,] <- list('BMITRI',            'Triceps Skinfold Comment')
+df[12,] <- list('BMIWAIST',         'Waist Circumference Comment')
+df[13,] <- list('BMIWT',                      'Weight Comment')
+df[14,] <- list('BMXARMC',              'Arm Circumference (cm)')
+df[15,] <- list('BMXARML',               'Upper Arm Length (cm)')
+df[16,] <- list('BMXBMI',           'Body Mass Index (kg/m**2)')
+df[17,] <- list('BMXCALF',     'Maximal Calf Circumference (cm)')
+df[18,] <- list('BMXHEAD',             'Head Circumference (cm)')
+df[19,] <- list('BMXHT',                'Standing Height (cm)')
+df[20,] <- list('BMXLEG',               'Upper Leg Length (cm)')
+df[21,] <- list('BMXRECUM',               'Recumbent Length (cm)')
+df[22,] <- list('BMXSUB',           'Subscapular Skinfold (mm)')
+df[23,] <- list('BMXTHICR',            'Thigh Circumference (cm)')
+df[24,] <- list('BMXTRI',               'Triceps Skinfold (mm)')
+df[25,] <- list('BMXWAIST',            'Waist Circumference (cm)')
+df[26,] <- list('BMXWT',                         'Weight (kg)')
+df[27,] <- list('SEQN',         'Respondent sequence number.')
+df
 
-## ----nhanestranslate----------------------------------------------------------
-nhanesTranslate('DEMO_D', 'RIAGENDR')
+## ----nhanes, eval=FALSE-------------------------------------------------------
+#  bmx_d  <- nhanes('BMX_D')
+#  demo_d <- nhanes('DEMO_D')
+
+## ----bmd1, eval=FALSE---------------------------------------------------------
+#  bmx_demo <- merge(demo_d, bmx_d)
+#  options(digits=4)
+#  select_cols <- c('RIAGENDR', 'BMXHT', 'BMXWT', 'BMXLEG', 'BMXCALF', 'BMXTHICR')
+#  print(bmx_demo[5:8,select_cols], row.names=FALSE)
+
+## ----bmx0, echo=FALSE---------------------------------------------------------
+df <- data.frame(matrix(1,nrow=4,ncol=6))
+names(df) <- c('RIAGENDR', 'BMXHT', 'BMXWT', 'BMXLEG', 'BMXCALF', 'BMXTHICR')
+df[1,] <- list(2, 156.0, 75.2, 38.0, 36.6, 53.7)
+df[2,] <- list(1, 167.6,  69.5,   40.4,    35.6, 48.0)
+df[3,] <- list(2, 163.7,  45.0,   39.2,    31.7,     41.3)
+df[4,] <- list(1, 182.4, 101.9,   41.5,    42.6,     50.5)
+print(df,row.names=FALSE)
+
+## ----nhanestranslate, eval=FALSE----------------------------------------------
+#  nhanesTranslate('DEMO_D', 'RIAGENDR')
+
+## ----translate1, echo=FALSE---------------------------------------------------
+df <- data.frame(matrix(1,nrow=3,ncol=2))
+names(df) <- c("Code.or.Value", "Value.Description")
+df[1,] <- list(1, 'Male')
+df[2,] <- list(2, 'Female')
+df[3,] <- list('.', 'Missing')
+vn <- 'RIAGENDR'
+
+lst <- list(df)
+names(lst) <- vn
+lst
 
 ## ----bmx1, eval=FALSE---------------------------------------------------------
 #  demo_d <- nhanesTranslate('DEMO_D', 'RIAGENDR', data=demo_d)
@@ -28,11 +99,21 @@ message("Translated columns: RIAGENDR")
 #  bmx_demo <- merge(demo_d, bmx_d)
 
 ## ----bmx3, echo=FALSE---------------------------------------------------------
-bmx_demo$RIAGENDR[bmx_demo$RIAGENDR==1] <- 'Male'
-bmx_demo$RIAGENDR[bmx_demo$RIAGENDR==2] <- 'Female'
+#bmx_demo$RIAGENDR[bmx_demo$RIAGENDR==1] <- 'Male'
+#bmx_demo$RIAGENDR[bmx_demo$RIAGENDR==2] <- 'Female'
 
-## ----bmx_final_result---------------------------------------------------------
-print(bmx_demo[5:8,select_cols], row.names=FALSE)
+## ----bmx_final_result, eval=FALSE---------------------------------------------
+#  print(bmx_demo[5:8,select_cols], row.names=FALSE)
+
+## ----bmx4, echo=FALSE---------------------------------------------------------
+df <- data.frame(matrix(1,nrow=4,ncol=6))
+names(df) <- c('RIAGENDR', 'BMXHT', 'BMXWT', 'BMXLEG', 'BMXCALF', 'BMXTHICR')
+df[1,] <- list('Female', 156.0, 75.2, 38.0, 36.6, 53.7)
+df[2,] <- list('Male', 167.6,  69.5,   40.4,    35.6, 48.0)
+df[3,] <- list('Female', 163.7,  45.0,   39.2,    31.7,     41.3)
+df[4,] <- list('Male', 182.4, 101.9,   41.5,    42.6,     50.5)
+
+print(df,row.names=FALSE)
 
 ## ----nhanestranslate1, eval=FALSE---------------------------------------------
 #  bpx_d <- nhanes('BPX_D')
@@ -52,7 +133,7 @@ df
 ## ----nhanestranslate2, eval=FALSE---------------------------------------------
 #  bpx_d_vars  <- nhanesTableVars('EXAM', 'BPX_D', namesonly=TRUE)
 #  #Alternatively may use bpx_d_vars = names(bpx_d)
-#  bpx_d <- suppressWarnings(nhanesTranslate('BPX_D', bpx_d_vars, data=bpx_d))
+#  bpx_d <- suppressMessages(nhanesTranslate('BPX_D', bpx_d_vars, data=bpx_d))
 
 ## ----simpletranslate2, echo=FALSE---------------------------------------------
 translated <- c('BPAARM', 'BPACSZ', 'BPAEN2', 'BPAEN3', 'BPAEN4', 'BPQ150A', 'BPQ150B', 'BPQ150C', 'BPQ150D', 'BPXPTY', 'BPXPULS', 'PEASCCT1', 'PEASCST1')

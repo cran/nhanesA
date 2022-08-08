@@ -17,7 +17,7 @@ nhanesTables(
 \item{data_group}{The type of survey (DEMOGRAPHICS, DIETARY, EXAMINATION, LABORATORY, QUESTIONNAIRE).
 Abbreviated terms may also be used: (DEMO, DIET, EXAM, LAB, Q).}
 
-\item{year}{The year in yyyy format where 1999 <= yyyy <= 2014.}
+\item{year}{The year in yyyy format where 1999 <= yyyy.}
 
 \item{nchar}{Truncates the table description to a max length of nchar.}
 
@@ -28,15 +28,17 @@ Abbreviated terms may also be used: (DEMO, DIET, EXAM, LAB, Q).}
 \item{includerdc}{If TRUE then RDC only tables are included in list (default=FALSE).}
 }
 \value{
-The names of the tables in the specified survey group.
+Returns a data frame that contains table attributes. If namesonly=TRUE,
+then a character vector of table names is returned.
 }
 \description{
 Enables quick display of all available tables in the survey group.
 }
 \details{
-Data are retrieved via web scraping using html wrappers from package rvest.
-It is often useful to display the table names in an NHANES survey. In effect this
-is a convenient way to browse the available NHANES tables.
+Function nhanesTables retrieves a list of tables and a 
+description of their contents from the NHANES website. This provides
+a convenient way to browse the available tables. NULL is returned when an
+HTML read error is encountered.
 }
 \examples{
 nhanesTables('EXAM', 2007)

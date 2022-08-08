@@ -7,12 +7,15 @@
 browseNHANES(year = NULL, data_group = NULL, nh_table = NULL)
 }
 \arguments{
-\item{year}{The year in yyyy format where 1999 <= yyyy <= 2016.}
+\item{year}{The year in yyyy format where 1999 <= yyyy.}
 
 \item{data_group}{The type of survey (DEMOGRAPHICS, DIETARY, EXAMINATION, LABORATORY, QUESTIONNAIRE).
 Abbreviated terms may also be used: (DEMO, DIET, EXAM, LAB, Q).}
 
 \item{nh_table}{The name of an NHANES table.}
+}
+\value{
+No return value
 }
 \description{
 The browser may be directed to a specific year, survey, or table.
