@@ -1,5 +1,5 @@
 #nhanesA - retrieve data from the CDC NHANES repository
-# Christopher J. Endres 07/22/2022
+# Christopher J. Endres 09/18/2022
 #
 nhanesURL <- 'https://wwwn.cdc.gov/Nchs/Nhanes/'
 dataURL <- 'https://wwwn.cdc.gov/Nchs/Nhanes/search/DataPage.aspx'
@@ -81,6 +81,8 @@ data_idx["L"] <- '2021-2022'
 data_idx["M"] <- '2023-2024'
 
 anomalytables2005 <- c('CHLMD_DR', 'SSUECD_R', 'HSV_DR')
+nchar_max <- 1024
+nchar_default <- 128
 
 #------------------------------------------------------------------------------
 # An internal function that determines which survey year the table belongs to.
@@ -105,8 +107,10 @@ anomalytables2005 <- c('CHLMD_DR', 'SSUECD_R', 'HSV_DR')
       return(data_idx[idx])
     } else { ## Underscore not 2nd to last. Assume table is from the first set.
       return("1999-2000")}
-  } else #If there are no underscores then table must be from first survey
-    nh_year <- "1999-2000"
+  } else { #If there are no underscores then table must be from first survey
+    return("1999-2000")
+  }
+#    nh_year <- "1999-2000"
 }
 
 #------------------------------------------------------------------------------
@@ -194,7 +198,7 @@ xpath <- '//*[@id="GridView1"]'
 #' @export
 #'
 
-nhanesTables <- function(data_group, year, nchar=100, details = FALSE, namesonly=FALSE, includerdc=FALSE) {
+nhanesTables <- function(data_group, year, nchar=128, details = FALSE, namesonly=FALSE, includerdc=FALSE) {
   if( !(data_group %in% names(nhanes_group)) ) {
     stop("Invalid survey group")
     return(NULL)
@@ -292,8 +296,8 @@ nhanesTables <- function(data_group, year, nchar=100, details = FALSE, namesonly
 #' Abbreviated terms may also be used: (DEMO, DIET, EXAM, LAB, Q).
 #' @param nh_table The name of the specific table to retrieve.
 #' @param details If TRUE then all columns in the variable description are returned (default=FALSE).
-#' @param nchar The number of characters in the Variable Description to print. Values are limited to 0<=nchar<=128.
-#' This is used to enhance readability, cause variable descriptions can be very long.
+#' @param nchar The number of characters in the Variable Description to print. Default length is 128,
+#' which is set to enhance readability cause variable descriptions can be very long.
 #' @param namesonly If TRUE then only the variable names are returned (default=FALSE).
 #' @return Returns a data frame that describes variable attributes for the specified table. If namesonly=TRUE,
 #' then a character vector of the variable names is returned.
@@ -306,7 +310,7 @@ nhanesTables <- function(data_group, year, nchar=100, details = FALSE, namesonly
 #' \donttest{nhanesTableVars('DEMO', 'DEMO_F', namesonly = TRUE)}
 #' @export
 #' 
-nhanesTableVars <- function(data_group, nh_table, details = FALSE, nchar=100, namesonly = FALSE) {
+nhanesTableVars <- function(data_group, nh_table, details = FALSE, nchar=128, namesonly = FALSE) {
   if( !(data_group %in% names(nhanes_group)) ) {
     stop("Invalid survey group")
     return(NULL)
@@ -329,7 +333,7 @@ nhanesTableVars <- function(data_group, nh_table, details = FALSE, nchar=100, na
     return(NULL)
   }
   
-  nchar_max <- 128
+  #nchar_max <- 128
   if(nchar > nchar_max) {
     nchar <- nchar_max
   }
@@ -538,7 +542,7 @@ nhanesAttr <- function(nh_table) {
 #' @export
 #' 
 nhanesSearch <- function(search_terms=NULL, exclude_terms=NULL, data_group=NULL, ignore.case=FALSE, 
-                         ystart=NULL, ystop=NULL, includerdc=FALSE, nchar=100, namesonly=FALSE) {
+                         ystart=NULL, ystop=NULL, includerdc=FALSE, nchar=128, namesonly=FALSE) {
   
   if(is.null(search_terms)) {
     stop("Search term is missing")
@@ -678,7 +682,7 @@ nhanesSearch <- function(search_terms=NULL, exclude_terms=NULL, data_group=NULL,
 #' \donttest{nhanesSearchTableNames('HPVS', includerdc=TRUE, details=TRUE)}
 #' @export
 #' 
-nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includerdc=FALSE, nchar=100, details=FALSE) {
+nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includerdc=FALSE, nchar=128, details=FALSE) {
   if(is.null(pattern)) {stop('No pattern was entered')}
   if(length(pattern)>1) {
     pattern <- pattern[1]
@@ -763,7 +767,7 @@ nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includ
 #' \donttest{nhanesSearchVarName('BMXHEAD', ystart=2003)}
 #' @export
 #'  
-nhanesSearchVarName <- function(varname=NULL, ystart=NULL, ystop=NULL, includerdc=FALSE, nchar=100, namesonly=TRUE) {
+nhanesSearchVarName <- function(varname=NULL, ystart=NULL, ystop=NULL, includerdc=FALSE, nchar=128, namesonly=TRUE) {
   if(is.null(varname)) {stop('No varname was entered')}
   if(length(varname)>1) {
     varname <- varname[1]
@@ -859,6 +863,104 @@ nhanesSearchVarName <- function(varname=NULL, ystart=NULL, ystop=NULL, includerd
 }
 
 #------------------------------------------------------------------------------
+#' Display codebook for selected variable.
+#' 
+#' Returns full NHANES codebook including Variable Name, SAS Label, English Text, Target,
+#' and Value distribution.
+#' 
+#' @importFrom stringr str_c str_sub str_remove_all str_trim
+#' @importFrom rvest html_elements html_table html_text2
+#'  
+#' @param nh_table The name of the NHANES table that contains the desired variable.
+#' @param colname The name of the table column (variable).
+#' @param dxa If TRUE then the 2005-2006 DXA codebook will be used (default=FALSE).
+#' @details Each NHANES variable has a codebook that provides a basic description
+#' as well as the distribution or range of values. This function returns the full
+#' codebook information for the selected variable.
+#' @return The codebook is returned as a list object. Returns NULL upon error.
+#' @examples
+#' nhanesCodebook('AUX_D', 'AUQ020D')
+#' nhanesCodebook('BPX_J', 'BPACSZ')
+#' @export
+#'
+nhanesCodebook <- function(nh_table, colname, dxa=FALSE) {
+  if(is.null(colname)) {
+    message('Column name is required')
+    return(0)
+  }
+  
+  if(dxa) {
+    url <- "https://wwwn.cdc.gov/nchs/data/nhanes/dxa/dxx_d.htm"
+  } else {  nh_year <- .get_year_from_nh_table(nh_table)
+  if(is.null(nh_year)) {
+    return(NULL)
+  }
+  if(nh_year == "Nnyfs"){
+    url <- str_c("https://wwwn.cdc.gov/Nchs/", nh_year, '/', nh_table, '.htm', sep='')
+  } else {
+    url <- str_c(nhanesURL, nh_year, '/', nh_table, '.htm', sep='')
+  }
+  }
+  
+  xpt <- str_c('//*[h3[a[@name="', colname, '"]]]', sep='')
+  
+  hurl <- .checkHtml(url)
+  tabletree <- hurl %>% html_elements(xpath=xpt)
+  #    tabletree <- url %>% read_html() %>% html_elements(xpath=xpt)
+  if(length(tabletree)==0) { # If not found then try 'id' instead of 'name'
+    xpt <- str_c('//*[h3[@id="', colname, '"]]', sep='')
+    
+    hurl <- .checkHtml(url)
+    tabletree <- hurl %>% html_elements(xpath=xpt)
+    #      tabletree <- url %>% read_html() %>% html_elements(xpath=xpt)
+  }
+  if(length(tabletree)>0) {
+    codetitles <- html_elements(tabletree, "dt") %>% html_text2()
+    codetext <- html_elements(tabletree, "dd") %>% html_text2()
+    names(codetext) <- codetitles
+    tabletrans <- html_elements(tabletree, 'table') %>% html_table()
+    names(tabletrans) <- colname
+    codebook <- c(codetext, tabletrans)
+    return(codebook)
+  } else { # Code table not found so let's see if last letter should be lowercase
+    nc <- nchar(colname)
+    if(length(grep("[[:upper:]]", stringr::str_sub(colname, start=nc, end=nc)))>0){
+      lcnm <- colname
+      stringr::str_sub(lcnm, start=nc, end=nc) <- tolower(stringr::str_sub(lcnm, start=nc, end=nc))
+      xpt <- str_c('//*[h3[a[@name="', lcnm, '"]]]', sep='')
+      
+      hurl <- .checkHtml(url)
+      tabletree <- hurl %>% html_elements(xpath=xpt)
+      #        tabletree <- url %>% read_html() %>% html_elements(xpath=xpt)
+      if(length(tabletree)==0) { # If not found then try 'id' instead of 'name'
+        xpt <- str_c('//*[h3[@id="', lcnm, '"]]', sep='')
+        
+        hurl <- .checkHtml(url)
+        tabletree <- hurl %>% html_elements(xpath=xpt)
+        #          tabletree <- url %>% read_html() %>% html_elements(xpath=xpt)
+      }
+      
+      if(length(tabletree)>0) {
+        codetitles <- html_elements(tabletree, "dt") %>% html_text2()
+        codetext <- html_elements(tabletree, "dd") %>% html_text2()
+        names(codetext) <- codetitles
+        tabletrans <- html_elements(tabletree, 'table') %>% html_table()
+        names(tabletrans) <- colname
+        codebook <- c(codetext, tabletrans)
+        return(codebook)
+      } else { # Still not found even after converting to lowercase
+        warning(c('Column "', colname, '" not found'), collapse='')
+        return(NULL)
+      }
+    } else { #Last character is not an uppercase letter, thus can't convert to lowercase
+      warning(c('Column "', colname, '" not found'), collapse='')
+      return(NULL)
+    }
+  }
+}
+
+
+#------------------------------------------------------------------------------
 #' Display code translation information.
 #' 
 #' Returns code translations for categorical variables, 
@@ -877,7 +979,7 @@ nhanesSearchVarName <- function(varname=NULL, ystart=NULL, ystop=NULL, includerd
 #' @param mincategories The minimum number of categories needed for code translations to be applied to the data (default=2).
 #' @param details If TRUE then all available table translation information is displayed (default=FALSE).
 #' @param dxa If TRUE then the 2005-2006 DXA translation table will be used (default=FALSE).
-#' @return The code translation table (or translated data frame when data is defined).
+#' @return The code translation table (or translated data frame when data is defined). Returns NULL upon error.
 #' @details Most NHANES data tables have encoded values. E.g. 1 = 'Male', 2 = 'Female'.
 #' Thus it is often helpful to view the code translations and perhaps insert the translated values
 #' in a data frame. Only a single table may be specified, but multiple variables within that table
@@ -892,7 +994,12 @@ nhanesTranslate <- function(nh_table, colnames=NULL, data = NULL, nchar = 32,
                             mincategories = 2, details=FALSE, dxa=FALSE) {
   if(is.null(colnames)) {
     message('Column name is required')
-    return(0)
+    return(NULL)
+  }
+  
+  if(!is.null(data) & details == TRUE) {
+    details = FALSE
+    warning("When a data table is passed to nhanesTranslate, the details variable is ignored")
   }
   
   get_translation_table <- function(colname, url, details) {
@@ -967,7 +1074,7 @@ nhanesTranslate <- function(nh_table, colnames=NULL, data = NULL, nchar = 32,
   translations <- lapply(colnames, get_translation_table, code_translation_url, details)
   names(translations) <- colnames
   
-  nchar_max <- 128
+  #nchar_max <- 128
   if(nchar > nchar_max) {
     nchar <- nchar_max
   }
