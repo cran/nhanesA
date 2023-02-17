@@ -1,5 +1,5 @@
 #nhanesA - retrieve data from the CDC NHANES repository
-# Christopher J. Endres 09/18/2022
+# Christopher J. Endres 02/15/2023
 #
 nhanesURL <- 'https://wwwn.cdc.gov/Nchs/Nhanes/'
 dataURL <- 'https://wwwn.cdc.gov/Nchs/Nhanes/search/DataPage.aspx'
@@ -218,7 +218,8 @@ nhanesTables <- function(data_group, year, nchar=128, details = FALSE, namesonly
                 str_to_title(as.character(nhanes_group[data_group])), 
                 '&CycleBeginYear=', unlist(str_split(as.character(nh_year), '-'))[[1]] , sep='')
   }
-  # At this point df contains every table
+  
+  # At this point df contains every table for the specified survey & year
   hurl <- .checkHtml(turl)
   if(is.null(hurl)) {
     message("Error occurred during read. No tables returned")
@@ -228,11 +229,16 @@ nhanesTables <- function(data_group, year, nchar=128, details = FALSE, namesonly
 #  df <- as.data.frame(turl %>% read_html() %>% html_elements(xpath=xpath) %>% html_table())
   # By default we exclude RDC Only tables as those cannot be downloaded
   
-  if(year %in% c('P', 'p', 'Y', 'y')) {
-    if(nrow(df)==0) {
+  if(nrow(df)==0) {
+    if(year %in% c(2019,2020)) {
+      message("No tables found. Please set year='P' for Pre-Pandemic data.")
+    } else {
       message("No tables found")
-      return(NULL)
     }
+    return(NULL)
+  }
+  
+  if(year %in% c('P', 'p', 'Y', 'y')) {
     if(year %in% c('P','p')) {
       df <- df[str_detect(df$Data.File,'^P_'),]
     }
@@ -244,6 +250,7 @@ nhanesTables <- function(data_group, year, nchar=128, details = FALSE, namesonly
 #    if(!includerdc) {
 #      df <- df[(df$Data.File != "RDC Only"),]
 #    }
+    
     if(namesonly == TRUE) {
       df$Doc.File <- str_remove(df$Doc.File, ' Doc')
       return(as.character(df$Doc.File))
@@ -414,7 +421,7 @@ nhanes <- function(nh_table) {
 #' @examples
 #' \donttest{dxa_b <- nhanesDXA(2001)}
 #' \donttest{dxa_c_s <- nhanesDXA(2003, suppl=TRUE)}
-#' \donttest{nhanesDXA(1999, destfile="dxx.xpt")}
+#' \dontrun{nhanesDXA(1999, destfile="dxx.xpt")}
 #' @export
 nhanesDXA <- function(year, suppl=FALSE, destfile=NULL) {
 
@@ -668,6 +675,7 @@ nhanesSearch <- function(search_terms=NULL, exclude_terms=NULL, data_group=NULL,
 #' @param ystart Four digit year of first survey included in search, where ystart >= 1999.
 #' @param ystop  Four digit year of final survey included in search, where ystop >= ystart.
 #' @param includerdc If TRUE then RDC only tables are included (default=FALSE).
+#' @param includewithdrawn IF TRUE then withdrawn tables are included (default=FALSE).
 #' @param nchar Truncates the variable description to a max length of nchar.
 #' @param details If TRUE then complete table information from the comprehensive
 #' data list is returned (default=FALSE).
@@ -682,7 +690,8 @@ nhanesSearch <- function(search_terms=NULL, exclude_terms=NULL, data_group=NULL,
 #' \donttest{nhanesSearchTableNames('HPVS', includerdc=TRUE, details=TRUE)}
 #' @export
 #' 
-nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includerdc=FALSE, nchar=128, details=FALSE) {
+nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includerdc=FALSE, 
+                                   includewithdrawn=FALSE, nchar=128, details=FALSE) {
   if(is.null(pattern)) {stop('No pattern was entered')}
   if(length(pattern)>1) {
     pattern <- pattern[1]
@@ -702,6 +711,10 @@ nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includ
   if(!includerdc) {
     df <- df[!(df$Data.File=='RDC Only'),]
   }
+  if(!includewithdrawn) {
+    df <- df[!(df$Date.Published=='Withdrawn'),]
+  }
+    
   
   if( !is.null(ystart) || !is.null(ystop) ) {
     # Use the first year of cycle (the odd year) for comparison
@@ -738,7 +751,7 @@ nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includ
   if(nrow(df)==0) {return(NULL)}
   row.names(df) <- NULL
   if(details==TRUE){
-    df$Data.File.Name <- str_sub(df$Data.File.Name, 1, nchar)
+    df$Data.File <- str_sub(df$Data.File, 1, nchar)
     return(df)
   } else {
     return(unlist(strsplit(df$Doc.File, " Doc")))
@@ -879,8 +892,8 @@ nhanesSearchVarName <- function(varname=NULL, ystart=NULL, ystop=NULL, includerd
 #' codebook information for the selected variable.
 #' @return The codebook is returned as a list object. Returns NULL upon error.
 #' @examples
-#' nhanesCodebook('AUX_D', 'AUQ020D')
-#' nhanesCodebook('BPX_J', 'BPACSZ')
+#' \donttest{nhanesCodebook('AUX_D', 'AUQ020D')}
+#' \donttest{nhanesCodebook('BPX_J', 'BPACSZ')}
 #' @export
 #'
 nhanesCodebook <- function(nh_table, colname, dxa=FALSE) {
@@ -905,13 +918,21 @@ nhanesCodebook <- function(nh_table, colname, dxa=FALSE) {
   xpt <- str_c('//*[h3[a[@name="', colname, '"]]]', sep='')
   
   hurl <- .checkHtml(url)
-  tabletree <- hurl %>% html_elements(xpath=xpt)
+  if(is.null(hurl)) {
+    tabletree <- NULL
+  } else {
+    tabletree <- hurl %>% html_elements(xpath=xpt)
+  }
   #    tabletree <- url %>% read_html() %>% html_elements(xpath=xpt)
   if(length(tabletree)==0) { # If not found then try 'id' instead of 'name'
     xpt <- str_c('//*[h3[@id="', colname, '"]]', sep='')
     
     hurl <- .checkHtml(url)
-    tabletree <- hurl %>% html_elements(xpath=xpt)
+    if(is.null(hurl)) {
+      tabletree <- NULL
+    } else {
+      tabletree <- hurl %>% html_elements(xpath=xpt)
+    }
     #      tabletree <- url %>% read_html() %>% html_elements(xpath=xpt)
   }
   if(length(tabletree)>0) {
@@ -919,8 +940,12 @@ nhanesCodebook <- function(nh_table, colname, dxa=FALSE) {
     codetext <- html_elements(tabletree, "dd") %>% html_text2()
     names(codetext) <- codetitles
     tabletrans <- html_elements(tabletree, 'table') %>% html_table()
-    names(tabletrans) <- colname
-    codebook <- c(codetext, tabletrans)
+    if(length(tabletrans) > 0) {
+      names(tabletrans) <- colname
+      codebook <- c(codetext, tabletrans)
+    } else {
+      codebook <- codetext
+    }
     return(codebook)
   } else { # Code table not found so let's see if last letter should be lowercase
     nc <- nchar(colname)
@@ -930,13 +955,21 @@ nhanesCodebook <- function(nh_table, colname, dxa=FALSE) {
       xpt <- str_c('//*[h3[a[@name="', lcnm, '"]]]', sep='')
       
       hurl <- .checkHtml(url)
-      tabletree <- hurl %>% html_elements(xpath=xpt)
+      if(is.null(hurl)) {
+        tabletree <- NULL
+      } else {
+        tabletree <- hurl %>% html_elements(xpath=xpt)
+      }
       #        tabletree <- url %>% read_html() %>% html_elements(xpath=xpt)
       if(length(tabletree)==0) { # If not found then try 'id' instead of 'name'
         xpt <- str_c('//*[h3[@id="', lcnm, '"]]', sep='')
         
         hurl <- .checkHtml(url)
-        tabletree <- hurl %>% html_elements(xpath=xpt)
+        if(is.null(hurl)) {
+          tabletree <- NULL
+        } else {
+          tabletree <- hurl %>% html_elements(xpath=xpt)
+        }
         #          tabletree <- url %>% read_html() %>% html_elements(xpath=xpt)
       }
       
@@ -945,8 +978,12 @@ nhanesCodebook <- function(nh_table, colname, dxa=FALSE) {
         codetext <- html_elements(tabletree, "dd") %>% html_text2()
         names(codetext) <- codetitles
         tabletrans <- html_elements(tabletree, 'table') %>% html_table()
-        names(tabletrans) <- colname
-        codebook <- c(codetext, tabletrans)
+        if(length(tabletrans) > 0) {
+          names(tabletrans) <- colname
+          codebook <- c(codetext, tabletrans)
+        } else {
+          codebook <- codetext
+        }
         return(codebook)
       } else { # Still not found even after converting to lowercase
         warning(c('Column "', colname, '" not found'), collapse='')
