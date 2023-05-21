@@ -1,12 +1,12 @@
-467af78994bc98fb8503c3dbfcc8237d *DESCRIPTION
+07241dac11e2360e3ffee4de09881b23 *DESCRIPTION
 c4b0a7a5f1d957408628171102468125 *NAMESPACE
-21116eaaba31825f1b740ce055c9d59b *NEWS.md
-b319edc9ce838a1b4f6de8721a0ca816 *R/nhanes.R
+26d4c0c97f33d5ce478cc36ff18aa195 *NEWS.md
+b34a7ef0ab60ae86747e704c076dbf98 *R/nhanes.R
 5948110353831083adaac2823bfdd948 *README.md
 69bb3427738dd57837e95d66250ad564 *build/vignette.rds
-872493e8c2f4d0b78dad6c7896c7a73f *inst/doc/Introducing_nhanesA.R
-bcd2d2130666b75cf02c20759af04804 *inst/doc/Introducing_nhanesA.Rmd
-b9b5b8cb1ce4d6d905bde40d7762bc49 *inst/doc/Introducing_nhanesA.html
+1e438bdee64227f0f5daedb20ff241e4 *inst/doc/Introducing_nhanesA.R
+981f14fddbb1490428dfe925e07c435f *inst/doc/Introducing_nhanesA.Rmd
+3e2e2d2ab758b1f14b409d6d5af933b2 *inst/doc/Introducing_nhanesA.html
 40a1490346f6e79896fd06a803d1029a *man/browseNHANES.Rd
 735aa86d89a64035b285406de59aba7d *man/figures/nhanesAsticker.png
 19a7989f87f18437dabf96d589c57118 *man/nhanes.Rd
@@ -18,5 +18,5 @@ d8a1403d48ca0f2944dd56754a83de86 *man/nhanesDXA.Rd
 f5526457f92c7354ad9413b6d5647798 *man/nhanesSearchVarName.Rd
 ebd0ff892d86c75f062974a7f9390c2c *man/nhanesTableVars.Rd
 1046d643df3eb71285bfa612945acf68 *man/nhanesTables.Rd
-a4794feb4958944845fa1254350cf9b4 *man/nhanesTranslate.Rd
-bcd2d2130666b75cf02c20759af04804 *vignettes/Introducing_nhanesA.Rmd
+156568695d8b454d5203e91d65604e72 *man/nhanesTranslate.Rd
+981f14fddbb1490428dfe925e07c435f *vignettes/Introducing_nhanesA.Rmd

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Christopher J. Endres" />
 
-<meta name="date" content="2023-02-17" />
+<meta name="date" content="2023-05-21" />
 
 <title>Introducing nhanesA</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Introducing nhanesA</h1>
 <h4 class="author">Christopher J. Endres</h4>
-<h4 class="date">2023-02-17</h4>
+<h4 class="date">2023-05-21</h4>
 
 
 
@@ -565,11 +565,14 @@ continuous NHANES. The table names include the prefix “P_”. To list
 pre-pandemic tables, use ‘P’ or ‘p’ as the year.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#List all pre-pandemic tables</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesSearchTableNames</span>(<span class="st">&#39;^P_&#39;</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#List pre-pandemic EXAM tables</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesTables</span>(<span class="st">&#39;EXAM&#39;</span>, <span class="st">&#39;P&#39;</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Table import and variable translation operate as usual</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>p_dxxfem <span class="ot">&lt;-</span> <span class="fu">nhanes</span>(<span class="st">&#39;P_DXXFEM&#39;</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesTranslate</span>(<span class="st">&#39;P_BMX&#39;</span>, <span class="st">&#39;BMDSTATS&#39;</span>)</span></code></pre></div>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#List table variables</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesTableVars</span>(<span class="st">&#39;EXAM&#39;</span>, <span class="st">&#39;P_AUX&#39;</span>, <span class="at">namesonly=</span><span class="cn">TRUE</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#List pre-pandemic EXAM tables</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesTables</span>(<span class="st">&#39;EXAM&#39;</span>, <span class="st">&#39;P&#39;</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Table import, variable translation, and codebook display operate as usual</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>p_dxxfem <span class="ot">&lt;-</span> <span class="fu">nhanes</span>(<span class="st">&#39;P_DXXFEM&#39;</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesTranslate</span>(<span class="st">&#39;P_BMX&#39;</span>, <span class="st">&#39;BMDSTATS&#39;</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">nhanesCodebook</span>(<span class="st">&#39;P_INS&#39;</span>, <span class="st">&#39;LBDINSI&#39;</span>)</span></code></pre></div>
 </div>
 <div id="dual-energy-x-ray-absorptiometry" class="section level3">
 <h3>Dual Energy X-Ray Absorptiometry</h3>

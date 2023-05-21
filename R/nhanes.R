@@ -323,10 +323,19 @@ nhanesTableVars <- function(data_group, nh_table, details = FALSE, nchar=128, na
     return(NULL)
   }
   
+  if(length(grep('^P_', nh_table))>0){
+    nh_year <- '2017-2020'
+    turl <- str_c(nhanesURL, 'search/variablelist.aspx?Component=', 
+                  str_to_title(as.character(nhanes_group[data_group])), 
+                  '&Cycle=', nh_year , sep='')
+    
+  } else {
   nh_year <- .get_year_from_nh_table(nh_table)
   turl <- str_c(nhanesURL, 'search/variablelist.aspx?Component=', 
                 str_to_title(as.character(nhanes_group[data_group])), 
-                '&CycleBeginYear=', unlist(str_split(as.character(nh_year), '-'))[[1]] , sep='')
+                '&CycleBeginYear=', unlist(str_split(as.character(nh_year), '-'))[[1]] , sep='') 
+  }
+  
   hurl <- .checkHtml(turl) 
   if(is.null(hurl)) {
     message("Error occurred during read. No table variables returned")
@@ -1022,8 +1031,8 @@ nhanesCodebook <- function(nh_table, colname, dxa=FALSE) {
 #' in a data frame. Only a single table may be specified, but multiple variables within that table
 #' can be selected. Code translations are retrieved for each variable. 
 #' @examples
-#' nhanesTranslate('DEMO_B', c('DMDBORN','DMDCITZN'))
-#' nhanesTranslate('BPX_F', 'BPACSZ', details=TRUE)
+#' \donttest{nhanesTranslate('DEMO_B', c('DMDBORN','DMDCITZN'))}
+#' \donttest{nhanesTranslate('BPX_F', 'BPACSZ', details=TRUE)}
 #' \donttest{nhanesTranslate('BPX_F', 'BPACSZ', data=nhanes('BPX_F'))}
 #' @export
 #' 
