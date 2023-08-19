@@ -27,6 +27,10 @@ nhanesCodebook <- function(nh_table, colname, dxa=FALSE) {
     return(0)
   }
   
+  if(dxa==FALSE & !is.na(collection_date) & !is.na(container_version)){
+    return(.nhanesCodebookDB(nh_table, colname))
+  }
+
   if(dxa) {
     url <- "https://wwwn.cdc.gov/nchs/data/nhanes/dxa/dxx_d.htm"
   } else {  nh_year <- .get_year_from_nh_table(nh_table)

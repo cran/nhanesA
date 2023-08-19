@@ -43,6 +43,13 @@ nhanesSearch <- function(search_terms=NULL, exclude_terms=NULL, data_group=NULL,
     stop("Search term is missing")
   }
   
+  if(!is.na(collection_date) & !is.na(container_version)){
+    return(.nhanesSearchDB(search_terms, exclude_terms, data_group,
+                           ignore.case, ystart, ystop, includerdc, nchar,
+                           namesonly))
+  }
+
+
   # Need to loop over url's
   
   df_initialized = FALSE
@@ -181,6 +188,12 @@ nhanesSearch <- function(search_terms=NULL, exclude_terms=NULL, data_group=NULL,
 nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includerdc=FALSE, 
                                    includewithdrawn=FALSE, nchar=128, details=FALSE) {
   if(is.null(pattern)) {stop('No pattern was entered')}
+
+  if(!is.na(collection_date) & !is.na(container_version)){
+    return(.nhanesSearchTableNamesDB(pattern, ystart, ystop, includerdc,
+                                     includewithdrawn, nchar, details))
+  }
+
   if(length(pattern)>1) {
     pattern <- pattern[1]
     warning("Multiple patterns entered. Only the first will be matched.")
@@ -270,6 +283,11 @@ nhanesSearchTableNames <- function(pattern=NULL, ystart=NULL, ystop=NULL, includ
 #'  
 nhanesSearchVarName <- function(varname=NULL, ystart=NULL, ystop=NULL, includerdc=FALSE, nchar=128, namesonly=TRUE) {
   if(is.null(varname)) {stop('No varname was entered')}
+  
+  if(!is.na(collection_date) & !is.na(container_version)){
+    return(.nhanesSearchVarNameDB(varname, ystart, ystop, includerdc,nchar, namesonly))
+  }
+
   if(length(varname)>1) {
     varname <- varname[1]
     warning("Multiple variable names entered. Only the first will be matched.")
