@@ -1,20 +1,6 @@
 # nhanesDB - retrieve nhanes data from the local container
 # Laha Ale and Robert Gentleman 06/08/2023
 
-container_version = Sys.getenv("EPICONDUCTOR_CONTAINER_VERSION",unset=NA)
-collection_date = as.Date(Sys.getenv("EPICONDUCTOR_COLLECTION_DATE"),unset=NA)
-
-container_infoDB = function() {
-  ##probably do something here if both are NA - say no container present
-  if(!is.na(collection_date) & !is.na(container_version)){
-  print( paste0("container version: ",container_version))
-  print(paste0("collection_date: ", collection_date))
-  }else{
-    print("no container present!")
-  }
-}
-
-
 
 .nhanesTablesDB = function( data_group, year,
                          nchar = 128,  details = FALSE,
@@ -322,13 +308,3 @@ container_infoDB = function() {
 
   res
 }
-
-
-
-.nhanesCDCDataDocDB = function(nh_table){
-  url_str = paste0("https://wwwn.cdc.gov/nchs/nhanes/",.get_year_from_nh_table(nh_table),"/",nh_table,".htm")
-  browseURL(url_str)
-
-}
-
-
