@@ -5,6 +5,7 @@
 
   if(!is.null(container_version) & !is.null(collection_date)){
     message("EpiConductor Container Version: ", container_version)
+    message("Data Collection Date: ", collection_date)
   }else{
     message("No Container is detected")
   }
