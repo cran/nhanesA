@@ -65,13 +65,14 @@ df
 #  select_cols <- c('RIAGENDR', 'BMXHT', 'BMXWT', 'BMXLEG', 'BMXCALF', 'BMXTHICR')
 #  print(bmx_demo[5:8,select_cols], row.names=FALSE)
 
-## ----bmx0, echo=FALSE---------------------------------------------------------
+## ----bmx4, echo=FALSE---------------------------------------------------------
 df <- data.frame(matrix(1,nrow=4,ncol=6))
 names(df) <- c('RIAGENDR', 'BMXHT', 'BMXWT', 'BMXLEG', 'BMXCALF', 'BMXTHICR')
-df[1,] <- list(2, 156.0, 75.2, 38.0, 36.6, 53.7)
-df[2,] <- list(1, 167.6,  69.5,   40.4,    35.6, 48.0)
-df[3,] <- list(2, 163.7,  45.0,   39.2,    31.7,     41.3)
-df[4,] <- list(1, 182.4, 101.9,   41.5,    42.6,     50.5)
+df[1,] <- list('Female', 156.0, 75.2, 38.0, 36.6, 53.7)
+df[2,] <- list('Male', 167.6,  69.5,   40.4,    35.6, 48.0)
+df[3,] <- list('Female', 163.7,  45.0,   39.2,    31.7,     41.3)
+df[4,] <- list('Male', 182.4, 101.9,   41.5,    42.6,     50.5)
+
 print(df,row.names=FALSE)
 
 ## ----nhanescodebook, eval=FALSE-----------------------------------------------
@@ -90,34 +91,8 @@ names(codelist) <- c('Variable Name', 'SAS Label', 'English Text', 'Target', 'RI
 
 codelist
 
-## ----bmx1, eval=FALSE---------------------------------------------------------
-#  demo_d <- nhanesTranslate('DEMO_D', 'RIAGENDR', data=demo_d)
-
-## ----bmx_m1, echo=FALSE-------------------------------------------------------
-message("Translated columns: RIAGENDR")
-
-## ----bmx2, eval=FALSE---------------------------------------------------------
-#  bmx_demo <- merge(demo_d, bmx_d)
-
-## ----bmx3, echo=FALSE---------------------------------------------------------
-#bmx_demo$RIAGENDR[bmx_demo$RIAGENDR==1] <- 'Male'
-#bmx_demo$RIAGENDR[bmx_demo$RIAGENDR==2] <- 'Female'
-
-## ----bmx_final_result, eval=FALSE---------------------------------------------
-#  print(bmx_demo[5:8,select_cols], row.names=FALSE)
-
-## ----bmx4, echo=FALSE---------------------------------------------------------
-df <- data.frame(matrix(1,nrow=4,ncol=6))
-names(df) <- c('RIAGENDR', 'BMXHT', 'BMXWT', 'BMXLEG', 'BMXCALF', 'BMXTHICR')
-df[1,] <- list('Female', 156.0, 75.2, 38.0, 36.6, 53.7)
-df[2,] <- list('Male', 167.6,  69.5,   40.4,    35.6, 48.0)
-df[3,] <- list('Female', 163.7,  45.0,   39.2,    31.7,     41.3)
-df[4,] <- list('Male', 182.4, 101.9,   41.5,    42.6,     50.5)
-
-print(df,row.names=FALSE)
-
 ## ----nhanestranslate1, eval=FALSE---------------------------------------------
-#  bpx_d <- nhanes('BPX_D')
+#  bpx_d <- nhanes('BPX_D', translate=FALSE)
 #  head(bpx_d[,6:11])
 
 ## ----simpletranslate1, echo=FALSE---------------------------------------------
@@ -177,7 +152,7 @@ df
 #  dxx_c_s <- nhanesDXA(2003, suppl=TRUE)
 #  #Apply code translations
 #  dxalist <- c('DXAEXSTS', 'DXIHE')
-#  dxx_b <- nhanesTranslate(colnames=dxalist, data=dxx_b, dxa=TRUE)
+#  dxx_b <- nhanesTranslate("dxxb",colnames=dxalist, data=dxx_b, dxa=TRUE)
 
 ## ----nnyfs, eval=FALSE--------------------------------------------------------
 #  #List NNYFS EXAM tables
@@ -248,27 +223,26 @@ bpxtables
 ## ----nhanessearchtablenames4, echo=FALSE--------------------------------------
 df <- data.frame(
   Years=character(),
-  Data.File.Name=character(),
+#  Data.File.Name=character(),
   Doc.File=character(),
   Data.File=character(),
   Date.Published=character())
-df[1,] <- list('2009-2010', 'Human Papillomavirus (HPV) - 6, 11, 16 & 1', 'HPVSER_F Doc', 'HPVSER_F Data [XPT - 171.6 KB]','November 2013')
-df[2,] <- list('2005-2006', 'Human Papillomavirus (HPV) - 6, 11, 16 & 1', 'HPVS_D_R Doc', 'RDC Only', 'July 2013')
-df[3,] <- list('2007-2008', 'Human Papillomavirus (HPV) - 6, 11, 16 & 1', 'HPVSER_E Doc', 'HPVSER_E Data [XPT - 155.7 KB]         November 2013')
-df[4,] <- list('2005-2006', 'Human Papillomavirus (HPV) - 6, 11, 16 & 1', 'HPVSER_D Doc', 'HPVSER_D Data [XPT - 151.6 KB]             July 2013')
-df[5,] <- list('2005-2006', 'Human Papillomavirus (HPV) - Multiplexed 6', 'HPVSRM_D Doc', 'HPVSRM_D Data [XPT - 302.6 KB]          January 2015')
-df[6,] <- list('2005-2006', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVSWR_D Doc', 'HPVSWR_D Data [XPT - 694.4 KB]         November 2010')
-df[7,] <- list('2007-2008', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVSWR_E Doc', 'HPVSWR_E Data [XPT - 677.9 KB]           August 2012')
-df[8,] <- list('2009-2010', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVSWR_F Doc', 'HPVSWR_F Data [XPT - 725.2 KB]           August 2012')
-df[9,] <- list('2011-2012', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVSWR_G Doc', 'HPVSWR_G Data [XPT - 661.1 KB]            March 2015')
-df[10,] <- list('2005-2006', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVSWR_D Doc', 'HPVSWR_D Data [XPT - 694.4 KB] Updated November 2018')
-df[11,] <- list('2009-2010', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVS_F_R Doc', 'RDC Only', 'August 2012')
-df[12,] <- list('2011-2012', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVS_G_R Doc', 'RDC Only', 'March 2015')
-df[13,] <- list('2013-2014', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVSWR_H Doc', 'HPVSWR_H Data [XPT - 716.6 KB]         December 2016')
-df[14,] <- list('2013-2014', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVS_H_R Doc', 'RDC Only', 'December 2016')
-df[15,] <- list('2015-2016', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVSWC_I Doc', 'HPVSWC_I Data [XPT - 33.3 KB]         November 2018')
-df[16,] <- list('2015-2016', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVSWR_I Doc', 'HPVSWR_I Data [XPT - 667.5 KB]         November 2018')
-df[17,] <- list('2015-2016', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVS_I_R Doc', 'RDC Only', 'November 2018')
-df[18,] <- list('2017-2018', 'Human Papillomavirus (HPV) DNA - Vaginal S', 'HPVS_J_R Doc', 'RDC Only', 'December 2020')
+df[1,] <- list('2009-2010', 'HPVSER_F Doc', 'HPVSER_F Data [XPT - 171.6 KB]', 'November 2013')
+df[2,] <- list('2007-2008', 'HPVSER_E Doc', 'HPVSER_E Data [XPT - 155.7 KB]', 'November 2013')
+df[3,] <- list('2005-2006', 'HPVSER_D Doc', 'HPVSER_D Data [XPT - 151.6 KB]', 'July 2013')
+df[4,] <- list('2005-2006', 'HPVSRM_D Doc', 'HPVSRM_D Data [XPT - 302.6 KB]', 'January 2015')
+df[5,] <- list('2007-2008', 'HPVSWR_E Doc', 'HPVSWR_E Data [XPT - 677.9 KB]', 'August 2012')
+df[6,] <- list('2009-2010', 'HPVSWR_F Doc', 'HPVSWR_F Data [XPT - 725.2 KB]', 'August 2012')
+df[7,] <- list('2011-2012', 'HPVSWR_G Doc', 'HPVSWR_G Data [XPT - 661.1 KB]', 'March 2015')
+df[8,] <- list('2005-2006', 'HPVSWR_D Doc', 'HPVSWR_D Data [XPT - 694.4 KB]', 'Updated November 2018')
+df[9,] <- list('2013-2014', 'HPVSWR_H Doc', 'HPVSWR_H Data [XPT - 716.6 KB]', 'December 2016')
+df[10,] <- list('2015-2016', 'HPVSWC_I Doc', 'HPVSWC_I Data [XPT - 33.3 KB]', 'November 2018')
+df[11,] <- list('2015-2016', 'HPVSWR_I Doc', 'HPVSWR_I Data [XPT - 667.5 KB]', 'November 2018')
+df[12,] <- list('2005-2006', 'HPVS_D_R Doc', 'RDC Only', 'July 2013')
+df[13,] <- list('2009-2010', 'HPVS_F_R Doc', 'RDC Only', 'August 2012')
+df[14,] <- list('2011-2012', 'HPVS_G_R Doc', 'RDC Only', 'March 2015')
+df[15,] <- list('2013-2014', 'HPVS_H_R Doc', 'RDC Only', 'December 2016')
+df[16,] <- list('2015-2016', 'HPVS_I_R Doc', 'RDC Only', 'November 2018')
+df[17,] <- list('2017-2018', 'HPVS_J_R Doc', 'RDC Only', 'December 2020')
 df
 
