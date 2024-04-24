@@ -1,6 +1,6 @@
 Package: nhanesA
-Version: 1.0
-Date: 2024-01-09
+Version: 1.1
+Date: 2024-04-23
 Title: NHANES Data Retrieval
 Authors@R: 
     c(person(given = "Christopher",
@@ -30,13 +30,13 @@ Encoding: UTF-8
 URL: https://cran.r-project.org/package=nhanesA
 Suggests: knitr, odbc, DBI, rmarkdown, survey, ggplot2
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 NeedsCompilation: no
-Packaged: 2024-01-09 14:39:10 UTC; BadgerDancer
+Packaged: 2024-04-24 00:14:53 UTC; BadgerDancer
 Author: Christopher Endres [aut, cre],
   Laha Ale [aut] (<https://orcid.org/0000-0002-4070-5289>),
   Robert Gentleman [aut],
   Deepayan Sarkar [aut]
 Maintainer: Christopher Endres <cjendres1@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-01-09 15:10:05 UTC
+Date/Publication: 2024-04-24 02:20:14 UTC

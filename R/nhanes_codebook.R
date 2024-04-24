@@ -34,7 +34,7 @@ nhanesCodebook <- function(nh_table, colname=NULL, dxa=FALSE) {
 ##  if(is.null(colname)) 
 ##    colname = nhanesAttr(nh_table)$names
 
-  if(isFALSE(dxa) && !grepl("^(P_|Y_)\\w+", nh_table) && .useDB()) {
+  if(isFALSE(dxa) && !grepl("^(Y_)\\w+", nh_table) && .useDB()) {
     return(.nhanesCodebookDB(nh_table, colname))
   }
   
@@ -83,7 +83,7 @@ nhanesCodebook <- function(nh_table, colname=NULL, dxa=FALSE) {
 ##' @export
 nhanesCodebookFromURL <- function(url) {
   if (length(url) != 1) stop("'url' must have length 1")
-  if (startsWith(tolower(url), "/nchs/nhanes"))
+  if (startsWith(tolower(url), "/nchs/"))
     url <- paste0(nhanesManifestPrefix, url)
   hurl <- .checkHtml(url)
   if (is.null(hurl) ||  is.na(hurl)) {
