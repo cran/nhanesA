@@ -10,7 +10,7 @@ vignette: >
 ---
 
 ## Background
-The nhanesA R package was developed to allow investigators to easily explore and retrieve data from the National Health and Nutrition Examination Survey (NHANES). The survey assesses overall health and nutrition of adults and children in the United States, and is conducted by the National Center for Health Statistics (NCHS). NHANES data are publicly available at: https://www.cdc.gov/nchs/nhanes.htm and are reported in thousands of peer-reviewed journal publications every year.
+The nhanesA R package was developed to allow investigators to easily explore and retrieve data from the National Health and Nutrition Examination Survey (NHANES). The survey assesses overall health and nutrition of adults and children in the United States, and is conducted by the National Center for Health Statistics (NCHS). NHANES data are publicly available at: https://www.cdc.gov/nchs/nhanes/ and are reported in thousands of peer-reviewed journal publications every year.
 
 ## NHANES Data
 Since 1999, the NHANES survey has been conducted continuously, and the surveys during that period are referred to as "continuous NHANES" to distinguish from several prior surveys. Continuous NHANES surveys are grouped in two-year intervals, with the first interval being 1999-2000.
@@ -199,7 +199,7 @@ df[df==4] <- 'Large (15X32)'
 df
 ```
 
-Some discretion should be applied when translating coded columns as code translations can be quite long. To improve readability the translation string is restricted to a default length of 128 but can be set as high as 1024. Also, columns that have at least two categories (e.g. Male, Female) will be translated, but mincategories can be set to 1 to perform the translation even if only a single category is present.
+Some discretion should be applied when translating coded columns as code translations can be quite long. To improve readability the translation string is restricted to a default length of 128 but can be set as high as 1024.
 
 ### Download a Complete Survey
 The primary goal of nhanesA is to enable fully customizable processing of select NHANES tables. However, it is quite easy to download entire surveys using nhanesA functions.

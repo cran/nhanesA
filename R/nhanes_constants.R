@@ -7,21 +7,35 @@
 ## from a local copy). To keep the implementing functions see them as
 ## regular character variables, we implement them as active bindings
 ## (see .onLoad() in zzz.R).
+##
+## Default values:
+##   nhanesTableURL <- 'https://wwwn.cdc.gov//Nchs/Data/Nhanes/Public/'
+##   nhanesManifestPrefix <- 'https://wwwn.cdc.gov'
 
-## nhanesTableURL <- 'https://wwwn.cdc.gov/Nchs/Nhanes/'
-## nhanesManifestPrefix <- 'https://wwwn.cdc.gov'
+## Note that the CDC changed the layout of data / doc files in November
+## 2024. For example, the DEMO_H doc URL, which was previously 
+##
+## <https://wwwn.cdc.gov/Nchs/Nhanes/2013-2014/DEMO_H.htm>
+##
+## has changed to
+##
+## <https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2013/DataFiles/DEMO_H.htm>
+##
+## Consequently, the default value of `nhanesTableURL` has from
+## 'https://wwwn.cdc.gov/Nchs/Nhanes/' to
+## 'https://wwwn.cdc.gov//Nchs/Data/Nhanes/Public/'. The 'DataFiles'
+## part has been incorporated as needed in other functions such as nhanes().
 
 ab_nhanesTableURL <- function(x) {
     if (!missing(x)) stop("Invalid assignment")
     paste0(Sys.getenv("NHANES_TABLE_BASE", unset = "https://wwwn.cdc.gov"),
-           "/Nchs/Nhanes/")
+           "/Nchs/Data/Nhanes/Public/")
 }
 
 ab_nhanesManifestPrefix <- function(x) {
     if (!missing(x)) stop("Invalid assignment")
     Sys.getenv("NHANES_TABLE_BASE", unset = "https://wwwn.cdc.gov")
 }
-
 
 nhanesURL <- 'https://wwwn.cdc.gov/Nchs/Nhanes/'
 dataURL <- 'https://wwwn.cdc.gov/Nchs/Nhanes/search/DataPage.aspx'
@@ -72,12 +86,13 @@ nh_years <-
 
 # Continuous NHANES table names have a letter suffix that indicates the collection interval
 data_idx <-
-  c(A = "1999-2000", a = "1999-2000", B = "2001-2002", b = "2001-2002", 
-    C = "2003-2004", c = "2003-2004", D = "2005-2006", E = "2007-2008", 
-    F = "2009-2010", G = "2011-2012", H = "2013-2014", I = "2015-2016", 
-    J = "2017-2018", K = "2019-2020", L = "2021-2022", M = "2023-2024")
+  c(A = "1999", a = "1999", B = "2001", b = "2001", 
+    C = "2003", c = "2003", D = "2005", E = "2007", 
+    F = "2009", G = "2011", H = "2013", I = "2015", 
+    J = "2017", K = "2019", L = "2021", M = "2023")
 
-anomalytables2005 <- c('CHLMD_DR', 'SSUECD_R', 'HSV_DR')
+anomalytables2003 <- c('SSUECD_R')
+anomalytables2005 <- c('CHLMD_DR', 'HSV_DR')
 nchar_max <- 1024
 nchar_default <- 128
 

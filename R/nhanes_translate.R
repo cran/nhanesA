@@ -20,7 +20,7 @@
 #'   can be very long. \cr Truncate the length by setting nchar
 #'   (default = 128).
 #' @param mincategories The minimum number of categories needed for
-#'   code translations to be applied to the data (default=2).
+#'   code translations to be applied to the data (default=1).
 #' @param details If TRUE then all available table translation
 #'   information is displayed (default=FALSE).
 #' @param dxa If TRUE then the 2005-2006 DXA translation table will be
@@ -49,7 +49,7 @@
 #' @export
 #' 
 nhanesTranslate <- function(nh_table, colnames=NULL, data = NULL, nchar = 128, 
-                            mincategories = 2, details=FALSE, dxa=FALSE,
+                            mincategories = 1, details=FALSE, dxa=FALSE,
                             cleanse_numeric = FALSE)
 {
   if(isFALSE(dxa) && !grepl("^(Y_)\\w+", nh_table) && .useDB()) {
@@ -128,7 +128,7 @@ nhanesTranslate <- function(nh_table, colnames=NULL, data = NULL, nchar = 128,
       if(nh_year == "Nnyfs"){
         paste0("https://wwwn.cdc.gov/Nchs/", nh_year, '/', nh_table, '.htm')
       } else {
-        paste0(nhanesTableURL, nh_year, '/', nh_table, '.htm')
+        paste0(nhanesTableURL, nh_year, '/DataFiles/', nh_table, '.htm')
       }
   }
   hurl <- .checkHtml(code_translation_url)
@@ -204,15 +204,20 @@ nhanesTranslate <- function(nh_table, colnames=NULL, data = NULL, nchar = 128,
 
 
 
-## alternative translate interface: given input (raw) data and input
+## The raw2translated() function below provides an alternative
+## translation interface given input (raw) data and input
 ## codebook. The intent is for this to work with data either from the
-## NHANES website or from the DB
+## NHANES website or from the DB. raw2translated() is currently
+## unexported, but used in nhanesFromURL(). It may be exported in some
+## form in future.
+
+## The intermediate functions are various helper utilities.
 
 
 ## numeric variables sometimes have 'codes' which have special
 ## meaning. Often these indicate left or right censoring (e.g., age >=
 ## 80 is coded as 80), or some special kind of missingness (e.g.,
-## refused / don't know). Sometimes these need to be handled on a case
+## "refused" / "don't know"). Sometimes these need to be handled on a case
 ## by case basis.
 
 ## Converting these to numerical values inevitably lose information,
@@ -384,11 +389,9 @@ specialNumericCodes <-
       )
 
 
-
-
-
-## convert 'raw' codes to either numeric or string (categorical)
-## values using codebook. For now, we will only
+## The next two functions convert 'raw' codes to either numeric or
+## string (categorical) values using a codebook. For now, we will only
+##
 ## - convert the 'NA' values to NA
 ## - complain if we see 'categorical' values
 
