@@ -1,5 +1,5 @@
 #nhanesA - retrieve data from the CDC NHANES repository
-# Christopher J. Endres 09/14/2023
+# 
 # FUNCTIONS:
 #   nhanes
 #   nhanesFromURL
@@ -40,10 +40,12 @@
 #'   The \code{nhanes} function cannot be used to import limited
 #'   access data.
 #' @examples 
-#' \donttest{bpx_e = nhanes('BPX_E')}
-#' \donttest{dim(bpx_e)}
-#' \donttest{folate_f = nhanes('FOLATE_F', includelabels = TRUE)}
-#' \donttest{dim(folate_f)}
+#' \donttest{
+#' bpx_e = nhanes('BPX_E')
+#' dim(bpx_e)
+#' folate_f = nhanes('FOLATE_F', includelabels = TRUE)
+#' dim(folate_f)
+#' }
 #' @export
 #' 
 nhanes <- function(nh_table, includelabels = FALSE,
@@ -154,9 +156,14 @@ nhanes <- function(nh_table, includelabels = FALSE,
 ##' @return A data frame containing the data in the XPT file avalable
 ##'   at the URL.
 ##' @examples 
-##' \donttest{vix_e = nhanesFromURL("https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2007/DataFiles/VIX_E.xpt")}
-##' \donttest{bpx_e = nhanesFromURL("/Nchs/Data/Nhanes/Public/2007/DataFiles/BPX_E.xpt", translated = FALSE)}
-##' \donttest{dim(bpx_e)}
+##' \donttest{
+##' ## May fail if CDC website is unavailable
+##' try({
+##'     vix_e = nhanesFromURL("https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2007/DataFiles/VIX_E.xpt")
+##'     bpx_e = nhanesFromURL("/Nchs/Data/Nhanes/Public/2007/DataFiles/BPX_E.xpt", translated = FALSE)
+##'     dim(bpx_e)
+##' })
+##' }
 ##' @export
 nhanesFromURL <- function(url, translated = TRUE, cleanse_numeric = TRUE,
                           nchar = 128, adjust_timeout = TRUE)
@@ -216,18 +223,24 @@ nhanesFromURL <- function(url, translated = TRUE, cleanse_numeric = TRUE,
 #' @details  Provide destfile in order to write the data to file. If destfile is not provided then
 #' the data will be imported into the R environment.
 #' @examples
-#' \donttest{dxa_b <- nhanesDXA(2001)}
-#' \donttest{dxa_c_s <- nhanesDXA(2003, suppl=TRUE)}
-#' \dontrun{dxa = nhanesDXA(1999, destfile="dxx.xpt")}
+#' \donttest{
+#' ## May fail if CDC website is unavailable
+#' try({
+#'     dxa_b <- nhanesDXA(2001)
+#'     dxa_c_s <- nhanesDXA(2003, suppl = TRUE)
+#' })
+#' ## To save to a local file
+#' ## dxa <- nhanesDXA(1999, destfile = "dxx.xpt")
+#' }
 #' @export
 nhanesDXA <- function(year, suppl=FALSE, destfile=NULL, adjust_timeout = TRUE) {
 
   dxa_fname <- function(year, suppl) {
     fname <- 
-      if(year == 1999 || year == 2000) { 'dxx'}
-      else if(year == 2001 || year == 2002) { 'dxx_b'}
-      else if(year == 2003 || year == 2004) { 'dxx_c'}
-      else if(year == 2005 || year == 2006) { 'DXX_D'}
+      if(year == 1999 || year == 2000) { '1999/datafiles/dxx'}
+      else if(year == 2001 || year == 2002) { '2001/datafiles/dxx_b'}
+      else if(year == 2003 || year == 2004) { '2003/datafiles/dxx_c'}
+      else if(year == 2005 || year == 2006) { '2005/datafiles/DXX_D'}
     if(isTRUE(suppl)) {
       fname <- paste0(fname, 
                       if(year == 2005 || year == 2006) '_S' else '_s')
@@ -561,8 +574,11 @@ nhanesSummary_codebook <- function(nh_table, src = nhanesCodebook(nh_table, ...)
 ##' @return A data frame with one row per variable, with columns
 ##'   depending on the value of the \code{use} argument.
 ##' @examples
-##' \donttest{nhanesTableSummary('DEMO_D', use = "data")}
-##' \donttest{nhanesTableSummary('DEMO_D', use = "codebook")}
+##' \donttest{
+##' ## May fail if CDC website is unavailable
+##' try(nhanesTableSummary('DEMO_D', use = "data"))
+##' try(nhanesTableSummary('DEMO_D', use = "codebook"))
+##' }
 ##' @export
 nhanesTableSummary <- function(nh_table, use = c("data", "codebook", "both"), ...)
 {

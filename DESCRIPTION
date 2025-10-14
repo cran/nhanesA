@@ -1,12 +1,13 @@
 Package: nhanesA
-Version: 1.4
-Date: 2025-09-09
+Version: 1.4.1
+Date: 2025-10-12
 Title: NHANES Data Retrieval
 Authors@R: 
     c(person(given = "Christopher",
              family = "Endres",
              role = "aut",
-             email = "cjendres1@gmail.com"),
+             email = "cjendres1@gmail.com",
+	     comment = "original author"),
       person(given="Laha", 
              family="Ale",
              role = "aut", 
@@ -15,7 +16,8 @@ Authors@R:
       person(given="Robert",
              family="Gentleman",
              role = "aut", 
-             email= "robert_gentleman@g.harvard.edu"),
+             email= "robert_gentleman@g.harvard.edu",
+             comment = c(ORCID = "0000-0003-4505-9893")),
       person(given="Deepayan", 
              family="Sarkar",
              role = c("aut", "cre"),
@@ -34,12 +36,12 @@ Suggests: knitr, DBI, odbc, RMariaDB, RPostgres, rmarkdown, survey,
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3
 NeedsCompilation: no
-Packaged: 2025-09-10 07:09:46 UTC; deepayan
-Author: Christopher Endres [aut],
+Packaged: 2025-10-13 16:24:36 UTC; deepayan
+Author: Christopher Endres [aut] (original author),
   Laha Ale [aut] (ORCID: <https://orcid.org/0000-0002-4070-5289>),
-  Robert Gentleman [aut],
+  Robert Gentleman [aut] (ORCID: <https://orcid.org/0000-0003-4505-9893>),
   Deepayan Sarkar [aut, cre] (ORCID:
     <https://orcid.org/0000-0003-4107-1553>)
 Maintainer: Deepayan Sarkar <deepayan.sarkar@r-project.org>
 Repository: CRAN
-Date/Publication: 2025-09-10 16:00:08 UTC
+Date/Publication: 2025-10-14 05:10:35 UTC
